@@ -1751,8 +1751,9 @@ summary {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShydHJhY2tsYXllcilcbmxpYnJhcnkoR2Vub21pY0ZlYXR1cmVzKVxubGlicmFyeShlbnNlbWJsZGIpXG5saWJyYXJ5KGhlcmUpXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmBgYCJ9 -->
-<pre class="r"><code>library(rtracklayer)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShSU1FMaXRlKVxubGlicmFyeShydHJhY2tsYXllcilcbmxpYnJhcnkoR2Vub21pY0ZlYXR1cmVzKVxubGlicmFyeShlbnNlbWJsZGIpXG5saWJyYXJ5KGhlcmUpXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmBgYCJ9 -->
+<pre class="r"><code>library(RSQLite)
+library(rtracklayer)
 library(GenomicFeatures)
 library(ensembldb)
 library(here)
@@ -1794,9 +1795,8 @@ Make the TxDb object ... The &quot;phase&quot; metadata column contains non-NA v
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWNvbHMoZ3RmX2dlbmUpICU+JSBoZWFkKClcblxuYGBgIn0= -->
-<pre class="r"><code>mcols(gtf_gene) %&gt;% head()
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWNvbHMoZ3RmX2dlbmUpICU+JSBoZWFkKClcbmBgYCJ9 -->
+<pre class="r"><code>mcols(gtf_gene) %&gt;% head()</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiRGF0YUZyYW1lIHdpdGggNiByb3dzIGFuZCAxMSBjb2x1bW5zXG4gICAgc291cmNlICAgICB0eXBlICAgICBzY29yZSAgICAgcGhhc2UgICAgICAgICAgIGdlbmVfaWQgICAgICAgICAgICAgICAgICAgICAgICAgIGdlbmVfdHlwZSAgIGdlbmVfbmFtZVxuICA8ZmFjdG9yPiA8ZmFjdG9yPiA8bnVtZXJpYz4gPGludGVnZXI+ICAgICAgIDxjaGFyYWN0ZXI+ICAgICAgICAgICAgICAgICAgICAgICAgPGNoYXJhY3Rlcj4gPGNoYXJhY3Rlcj5cbjEgICBIQVZBTkEgICAgIGdlbmUgICAgICAgIE5BICAgICAgICBOQSBFTlNHMDAwMDAyMjM5NzIuNSB0cmFuc2NyaWJlZF91bnByb2Nlc3NlZF9wc2V1ZG9nZW5lICAgICBERFgxMUwxXG4yICAgSEFWQU5BICAgICBnZW5lICAgICAgICBOQSAgICAgICAgTkEgRU5TRzAwMDAwMjI3MjMyLjUgICAgICAgICAgICAgdW5wcm9jZXNzZWRfcHNldWRvZ2VuZSAgICAgIFdBU0g3UFxuMyAgRU5TRU1CTCAgICAgZ2VuZSAgICAgICAgTkEgICAgICAgIE5BIEVOU0cwMDAwMDI3ODI2Ny4xICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWlSTkEgICBNSVI2ODU5LTFcbjQgICBIQVZBTkEgICAgIGdlbmUgICAgICAgIE5BICAgICAgICBOQSBFTlNHMDAwMDAyNDM0ODUuNSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbG5jUk5BIE1JUjEzMDItMkhHXG41ICBFTlNFTUJMICAgICBnZW5lICAgICAgICBOQSAgICAgICAgTkEgRU5TRzAwMDAwMjg0MzMyLjEgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtaVJOQSAgIE1JUjEzMDItMlxuNiAgIEhBVkFOQSAgICAgZ2VuZSAgICAgICAgTkEgICAgICAgIE5BIEVOU0cwMDAwMDIzNzYxMy4yICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsbmNSTkEgICAgIEZBTTEzOEFcbiAgICAgICAgbGV2ZWwgICAgIGhnbmNfaWQgICAgICAgICAgaGF2YW5hX2dlbmUgICAgICAgICB0YWdcbiAgPGNoYXJhY3Rlcj4gPGNoYXJhY3Rlcj4gICAgICAgICAgPGNoYXJhY3Rlcj4gPGNoYXJhY3Rlcj5cbjEgICAgICAgICAgIDIgIEhHTkM6MzcxMDIgT1RUSFVNRzAwMDAwMDAwOTYxLjEgICAgICAgICAgTkFcbjIgICAgICAgICAgIDIgIEhHTkM6MzgwMzQgT1RUSFVNRzAwMDAwMDAwOTU4LjEgICAgICAgICAgTkFcbjMgICAgICAgICAgIDMgIEhHTkM6NTAwMzkgICAgICAgICAgICAgICAgICAgTkEgICAgICAgICAgTkFcbjQgICAgICAgICAgIDIgIEhHTkM6NTI0ODIgT1RUSFVNRzAwMDAwMDAwOTU5LjEgIG5jUk5BX2hvc3RcbjUgICAgICAgICAgIDMgIEhHTkM6MzUyOTQgICAgICAgICAgICAgICAgICAgTkEgICAgICAgICAgTkFcbjYgICAgICAgICAgIDIgIEhHTkM6MzIzMzQgT1RUSFVNRzAwMDAwMDAwOTYwLjEgICAgICAgICAgTkFcbiJ9 -->
 <pre><code>DataFrame with 6 rows and 11 columns
@@ -1821,16 +1821,15 @@ Make the TxDb object ... The &quot;phase&quot; metadata column contains non-NA v
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUoZ3RmX2dlbmUkdGFnKVxuXG5gYGAifQ== -->
-<pre class="r"><code>table(gtf_gene$tag)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUoZ3RmX2dlbmUkdGFnKVxuYGBgIn0= -->
+<pre class="r"><code>table(gtf_gene$tag)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG4gICAgICBmcmFnbWVudGVkX2xvY3VzICAgICAgICAgICAgIG5jUk5BX2hvc3QgICAgICBvdmVybGFwcGluZ19sb2N1cyAgICAgICAgICAgICAgICAgICAgUEFSICAgICAgICAgcHNldWRvX2NvbnNlbnMgXG4gICAgICAgICAgICAgICAgICAgICAyICAgICAgICAgICAgICAgICAgIDE4NDQgICAgICAgICAgICAgICAgICAxMDUzMSAgICAgICAgICAgICAgICAgICAgIDQ1ICAgICAgICAgICAgICAgICAgIDczNjMgXG5yZWZlcmVuY2VfZ2Vub21lX2Vycm9yICAgICAgICAgICAgICByZXRyb2dlbmUgICAgICAgICBzZW1pX3Byb2Nlc3NlZCBcbiAgICAgICAgICAgICAgICAgICAgMTUgICAgICAgICAgICAgICAgICAgIDM4NCAgICAgICAgICAgICAgICAgICAgICA2IFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gICAgICBmcmFnbWVudGVkX2xvY3VzICAgICAgICAgICAgIG5jUk5BX2hvc3QgICAgICBvdmVybGFwcGluZ19sb2N1cyAgICAgICAgICAgICAgICAgICAgUEFSIFxuICAgICAgICAgICAgICAgICAgICAgMiAgICAgICAgICAgICAgICAgICAxODQ0ICAgICAgICAgICAgICAgICAgMTA1MzEgICAgICAgICAgICAgICAgICAgICA0NSBcbiAgICAgICAgcHNldWRvX2NvbnNlbnMgcmVmZXJlbmNlX2dlbm9tZV9lcnJvciAgICAgICAgICAgICAgcmV0cm9nZW5lICAgICAgICAgc2VtaV9wcm9jZXNzZWQgXG4gICAgICAgICAgICAgICAgICA3MzYzICAgICAgICAgICAgICAgICAgICAgMTUgICAgICAgICAgICAgICAgICAgIDM4NCAgICAgICAgICAgICAgICAgICAgICA2IFxuIn0= -->
 <pre><code>
-      fragmented_locus             ncRNA_host      overlapping_locus                    PAR         pseudo_consens 
-                     2                   1844                  10531                     45                   7363 
-reference_genome_error              retrogene         semi_processed 
-                    15                    384                      6 </code></pre>
+      fragmented_locus             ncRNA_host      overlapping_locus                    PAR 
+                     2                   1844                  10531                     45 
+        pseudo_consens reference_genome_error              retrogene         semi_processed 
+                  7363                     15                    384                      6 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1897,7 +1896,7 @@ exon_length_tbl = endoapply(width(GenomicRanges::reduce(exons_per_gene)), sum) %
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuZV9pbmZvX3RibCAlPiUgaGVhZCgpXG5gYGAifQ== -->
 <pre class="r"><code>gene_info_tbl %&gt;% head()</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MTMsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNFZVeTI3VFFCU2RQT3lTVkVGRnJaQ1FXTEZCQXNXeVorSkhZSUdpaGlhVlNFRjlpTEJBa2VzNEQrR09nKzMwc1VOSXNFQjhBei9EZ20vZ0kxaXdRNVZvdVk1bjRuR2FGa3ZqT2VlZU96TjM3dHlaM1dhWGxMdGxoRkFCRldSb0VrQWtIZXh2VlMyRWlua2dPVlJFcGJnL0JhZDFBQlZvYTlCa0p0eDV2clBYVXVNUFkxSTNzYUl2RVV4TWxncW1oUTFUMGE0S05WS3o5R1VqckJxQnFaYU1JS2FoRVFVdlJMZlNiSFkxN1FYM2wxODM5dHJtSzhaS25lMWR3OUxyVlM2dmdrRWpLcTdpZGt2d1NVeDh4cTFHUnlOV0E5SlJtUzBVNTJocHkrUlA5dHhqMXd0WmVQZVl0ZWlNQWszQVdNQkV3RFVCNndJMkJHd0syQkp3bldFcFhrc1ZpU1lTTEJJaWtwcElkSkVZSWpGRllvbEVqQUNMRVdBeEFpeHV2aXZnTndMdUxLUlZjanc3NUZtZDUzcGdPNUVmQUxwZ0JRdW5wTHhGeUdvaXRQa1RvUkMwNDI4SWZUNVBkV3NiN0I4UmF0NUg2T3dUUWljUEVmcjZlK0dVODZ6bFVoNkhrNzlrRVJUNGJYbk1RWldEUjRscjRmTEdZTVhhZlJBRk5nMmRZSHpvOW50VE9nbDh4dzFEd0pQUW5mYjlvVXRkNW5uM1JsVTZHdS91Tk9aMVNKMlVMWld5VVpUYnJaM05KOFRVVkp5MVdDcXBaU3k2cXBKNjFvSnIxc0lvSGRlem93Z21NRTkyelkyWCsvdnRnMDV5cytHckc5cjh5bC9SZEFzMHVLaVg4RjNyVS8rL2o2SE9mTmJZY1NlK2l6MkxmSmFvM3NnUG95V2VyR0JLdnhCNitnd3dGSjI4QWYwWHlQZWZWSmQvQUc4bGV1RnZvaGUvcDNyeUlyRkNrOUkrVy8vVVBuSjUvVmY0RXhVZmZtL2M1MC9Zak1hT1hBL2Q5d0tWd3NnT0lrWUtMdVhqNURBdXdPd3MwZGxrUHN0b1NKMTBsZFdSZld4VHV5Y1UzaXBneCsvREtIdklUWU9wNS9VOGx3NmpFVGU1cHo3Tm1tN05USFI2dExEYlV1Q2ZLSHpIY1pyeUgrQUhXVCsvNW5LViszWmtLNE1nM3V6c2dtV21XL0VuMGRpbk1GbCtuZVZZSEp3TEZneHJVeG92M3E4Nm95bDlWOVhpY2ltemcwRXNvaHc3UEk0cnlacEZIcG5Fa3d2N0hhZFgxTE1QWFkrUjI3REwyU2FWU1RDbS9HREtZQTJWeUk5czdsZDJmSTlia3RmajRoOU01emtjMFFjQUFBPT0ifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MTMsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNFZVeTI3VFFCU2RQSnlTVkVGRnJaQ1FXTEZCQXNXeVorTFlnUVdLR3BwVUlnWDFJY0lDUmE3alBJUTdEcmJUeHc0aHdRTHhEZndNQzc2QmoyREJEbFdpNWRxZWljZXBXeXlONTV4NzdzemN1WE5uZHR0OVV1bFhFRUlGVkNoQmt3QWk2V0IvcTJZZ1ZNd0R5YUVpS29mOUtUaXRBNmhDVzROV1lzS2Q1enQ3SFNYOE1DWk5IY3RhaHFCamtpbm9CbTdvc25wVnFKTzZvV1dOTU9vRXBzb1lRZlNHU21TOEZOMUt1OTFYMVJmY3YvUzZ0ZGZWWHpGVzdtM3ZOZ3l0V2VQeUtoaFVvdUFhN25ZRW45akVaOXhxOVZSaXRDQWQxV2loTUVlWkxaVy9rbU1mMjQ3UHdydkhyRVZyNHFrQ3hnSW1BcTRMV0JOd1E4QzZnQTBCTnhtV3dyVVVrYWdpd1NJaElxbUxSQk5KUXlTNlNBeVJpQkZnTVFJc1JvREZ6ZmNGL0ViQXZhVzBTcFpqK2p5cmkxeVBUQ3R3UFVBWHJHRGhsT1MzQ0JsdGhEWi9JdVNEZHZ3Tm9jL25pVzVzZy8walF1MzdDSjE5UXVqa0lVSmZmeStkY3A2MVhNTERjUEtYTElJQ3Z5MlBPYWh4OENoMkxWemVHS3hZdXc4Q3o2Uys1VTBQN2VGZ1RtZWVhOW0rRDNqbTIvT2hPN2FwelR6djNxaEtSOVBkbmRhaURxbVZzRXdwSFVXbDI5blpmRUowVmNGcGk2R1Flc3FpS1FwcHBpMjRiaXlOMG5BelBZcGdBdk9rMTl4NHViL2ZQZWpGTnh1K1prTmRYUGtybW1hQUJoZjFFcjVyZlpyLzkya29rYzhhTys3WWQ3bG5rVWVKR2t4Y1A4andaQVZUL29YUTAyZUFvZWhLRzlCL2dYei9TZlRTRCtDZFdDLzhqZlhpOTBTUFh5UldhRkxTcCt1Zm1rYzJyLzhxZjZMQ3d4OU1oL3dKaTJqb3lIWGZmaTlReVE5TUwyQ2tZRk0rcnVTSEJaaWVKVGliTFdhWmpLbVZyTEk2TVk5TmFnNkV3bHNGYkxsREdHV091V2swZDV5Qlk5TnhNT0VtKzlTbGFkT3R5RVRuUjB1N0xYdnVpY3gzSEtZcC93RitrUFh6YXk1WFpXZ0dwanp5d3MxR0Z5dzEzWW83QzZZdWhjbnk2eXpINHVDY3QyUlltOU53OFdITm1zenB1eG84cHJBQ094akVJc3F4dytPNEdxOVo1SkZKUExtdzMybHlSUjN6MEhZWXVRMjdqRFlwejd3cDVRZFRBYXN2QjI1Z2NyK0s1VHJjRXI4ZUYvOEFic1ZuZjlFSEFBQT0ifQ== -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["gene_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gene_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seqname"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["start"],"name":[4],"type":["int"],"align":["right"]},{"label":["end"],"name":[5],"type":["int"],"align":["right"]},{"label":["strand"],"name":[6],"type":["fctr"],"align":["left"]},{"label":["gene_type"],"name":[7],"type":["chr"],"align":["left"]},{"label":["hgnc_id"],"name":[8],"type":["chr"],"align":["left"]},{"label":["havana_gene"],"name":[9],"type":["chr"],"align":["left"]},{"label":["gencode_tag"],"name":[10],"type":["chr"],"align":["left"]},{"label":["full_length"],"name":[11],"type":["int"],"align":["right"]},{"label":["exon_length"],"name":[12],"type":["int"],"align":["right"]},{"label":["exon_num"],"name":[13],"type":["int"],"align":["right"]}],"data":[{"1":"ENSG00000223972.5","2":"DDX11L1","3":"chr1","4":"11869","5":"14409","6":"+","7":"transcribed_unprocessed_pseudogene","8":"HGNC:37102","9":"OTTHUMG00000000961.1","10":"NA","11":"2541","12":"1735","13":"9"},{"1":"ENSG00000227232.5","2":"WASH7P","3":"chr1","4":"14404","5":"29570","6":"-","7":"unprocessed_pseudogene","8":"HGNC:38034","9":"OTTHUMG00000000958.1","10":"NA","11":"15167","12":"1351","13":"11"},{"1":"ENSG00000278267.1","2":"MIR6859-1","3":"chr1","4":"17369","5":"17436","6":"-","7":"miRNA","8":"HGNC:50039","9":"NA","10":"NA","11":"68","12":"68","13":"1"},{"1":"ENSG00000243485.5","2":"MIR1302-2HG","3":"chr1","4":"29554","5":"31109","6":"+","7":"lncRNA","8":"HGNC:52482","9":"OTTHUMG00000000959.1","10":"ncRNA_host","11":"1556","12":"1021","13":"5"},{"1":"ENSG00000284332.1","2":"MIR1302-2","3":"chr1","4":"30366","5":"30503","6":"+","7":"miRNA","8":"HGNC:35294","9":"NA","10":"NA","11":"138","12":"138","13":"1"},{"1":"ENSG00000237613.2","2":"FAM138A","3":"chr1","4":"34554","5":"36081","6":"-","7":"lncRNA","8":"HGNC:32334","9":"OTTHUMG00000000960.1","10":"NA","11":"1528","12":"1219","13":"5"}],"options":{"columns":{"min":{},"max":[10],"total":[13]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
@@ -1919,66 +1918,9 @@ exon_length_tbl = endoapply(width(GenomicRanges::reduce(exons_per_gene)), sum) %
 <h2>Compare the results with Ensembl database</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuZXMoZWRiLCBmaWx0ZXIgPSBjYW5vbmljYWxfY2hyb21zX29ubHlfZmlsdGVyKVxuYGBgIn0= -->
-<pre class="r"><code>genes(edb, filter = canonical_chroms_only_filter)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZWRiX2dlbmVzID0gZ2VuZXMoZWRiLCBmaWx0ZXIgPSBjYW5vbmljYWxfY2hyb21zX29ubHlfZmlsdGVyKVxuYGBgIn0= -->
+<pre class="r"><code>edb_genes = genes(edb, filter = canonical_chroms_only_filter)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiR1JhbmdlcyBvYmplY3Qgd2l0aCA2MDYyNCByYW5nZXMgYW5kIDggbWV0YWRhdGEgY29sdW1uczpcbiAgICAgICAgICAgICAgICAgIHNlcW5hbWVzICAgICAgICAgICAgcmFuZ2VzIHN0cmFuZCB8ICAgICAgICAgZ2VuZV9pZCAgIGdlbmVfbmFtZVxuICAgICAgICAgICAgICAgICAgICAgPFJsZT4gICAgICAgICA8SVJhbmdlcz4gIDxSbGU+IHwgICAgIDxjaGFyYWN0ZXI+IDxjaGFyYWN0ZXI+XG4gIEVOU0cwMDAwMDIyMzk3MiAgICAgY2hyMSAgICAgICAxMTg2OS0xNDQwOSAgICAgICsgfCBFTlNHMDAwMDAyMjM5NzIgICAgIEREWDExTDFcbiAgRU5TRzAwMDAwMjI3MjMyICAgICBjaHIxICAgICAgIDE0NDA0LTI5NTcwICAgICAgLSB8IEVOU0cwMDAwMDIyNzIzMiAgICAgIFdBU0g3UFxuICBFTlNHMDAwMDAyNzgyNjcgICAgIGNocjEgICAgICAgMTczNjktMTc0MzYgICAgICAtIHwgRU5TRzAwMDAwMjc4MjY3ICAgTUlSNjg1OS0xXG4gIEVOU0cwMDAwMDI0MzQ4NSAgICAgY2hyMSAgICAgICAyOTU1NC0zMTEwOSAgICAgICsgfCBFTlNHMDAwMDAyNDM0ODUgTUlSMTMwMi0ySEdcbiAgRU5TRzAwMDAwMjg0MzMyICAgICBjaHIxICAgICAgIDMwMzY2LTMwNTAzICAgICAgKyB8IEVOU0cwMDAwMDI4NDMzMiAgIE1JUjEzMDItMlxuICAgICAgICAgICAgICAuLi4gICAgICAuLi4gICAgICAgICAgICAgICAuLi4gICAgLi4uIC4gICAgICAgICAgICAgLi4uICAgICAgICAgLi4uXG4gIEVOU0cwMDAwMDIyNDI0MCAgICAgY2hyWSAyNjU0OTQyNS0yNjU0OTc0MyAgICAgICsgfCBFTlNHMDAwMDAyMjQyNDAgICAgIENZQ1NQNDlcbiAgRU5TRzAwMDAwMjI3NjI5ICAgICBjaHJZIDI2NTg2NjQyLTI2NTkxNjAxICAgICAgLSB8IEVOU0cwMDAwMDIyNzYyOSAgU0xDMjVBMTVQMVxuICBFTlNHMDAwMDAyMzc5MTcgICAgIGNoclkgMjY1OTQ4NTEtMjY2MzQ2NTIgICAgICAtIHwgRU5TRzAwMDAwMjM3OTE3ICAgICBQQVJQNFAxXG4gIEVOU0cwMDAwMDIzMTUxNCAgICAgY2hyWSAyNjYyNjUyMC0yNjYyNzE1OSAgICAgIC0gfCBFTlNHMDAwMDAyMzE1MTQgICAgICBDQ05RUDJcbiAgRU5TRzAwMDAwMjM1ODU3ICAgICBjaHJZIDU2ODU1MjQ0LTU2ODU1NDg4ICAgICAgKyB8IEVOU0cwMDAwMDIzNTg1NyAgICAgQ1RCUDJQMVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGdlbmVfYmlvdHlwZSBzZXFfY29vcmRfc3lzdGVtXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxjaGFyYWN0ZXI+ICAgICAgPGNoYXJhY3Rlcj5cbiAgRU5TRzAwMDAwMjIzOTcyIHRyYW5zY3JpYmVkX3VucHJvY2Vzc2VkX3BzZXVkb2dlbmUgICAgICAgY2hyb21vc29tZVxuICBFTlNHMDAwMDAyMjcyMzIgICAgICAgICAgICAgdW5wcm9jZXNzZWRfcHNldWRvZ2VuZSAgICAgICBjaHJvbW9zb21lXG4gIEVOU0cwMDAwMDI3ODI2NyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1pUk5BICAgICAgIGNocm9tb3NvbWVcbiAgRU5TRzAwMDAwMjQzNDg1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsbmNSTkEgICAgICAgY2hyb21vc29tZVxuICBFTlNHMDAwMDAyODQzMzIgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtaVJOQSAgICAgICBjaHJvbW9zb21lXG4gICAgICAgICAgICAgIC4uLiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLi4uICAgICAgICAgICAgICAuLi5cbiAgRU5TRzAwMDAwMjI0MjQwICAgICAgICAgICAgICAgcHJvY2Vzc2VkX3BzZXVkb2dlbmUgICAgICAgY2hyb21vc29tZVxuICBFTlNHMDAwMDAyMjc2MjkgICAgICAgICAgICAgdW5wcm9jZXNzZWRfcHNldWRvZ2VuZSAgICAgICBjaHJvbW9zb21lXG4gIEVOU0cwMDAwMDIzNzkxNyAgICAgICAgICAgICB1bnByb2Nlc3NlZF9wc2V1ZG9nZW5lICAgICAgIGNocm9tb3NvbWVcbiAgRU5TRzAwMDAwMjMxNTE0ICAgICAgICAgICAgICAgcHJvY2Vzc2VkX3BzZXVkb2dlbmUgICAgICAgY2hyb21vc29tZVxuICBFTlNHMDAwMDAyMzU4NTcgICAgICAgICAgICAgICBwcm9jZXNzZWRfcHNldWRvZ2VuZSAgICAgICBjaHJvbW9zb21lXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvblxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGNoYXJhY3Rlcj5cbiAgRU5TRzAwMDAwMjIzOTcyICAgICAgICAgICAgICAgICAgICAgICAgICAgIERFQUQvSC1ib3ggaGVsaWNhc2UgMTEgbGlrZSAxIFtTb3VyY2U6SEdOQyBTeW1ib2w7QWNjOkhHTkM6MzcxMDJdXG4gIEVOU0cwMDAwMDIyNzIzMiAgICAgICAgICAgICAgICAgICAgICAgIFdBU1AgZmFtaWx5IGhvbW9sb2cgNywgcHNldWRvZ2VuZSBbU291cmNlOkhHTkMgU3ltYm9sO0FjYzpIR05DOjM4MDM0XVxuICBFTlNHMDAwMDAyNzgyNjcgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtaWNyb1JOQSA2ODU5LTEgW1NvdXJjZTpIR05DIFN5bWJvbDtBY2M6SEdOQzo1MDAzOV1cbiAgRU5TRzAwMDAwMjQzNDg1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBNSVIxMzAyLTIgaG9zdCBnZW5lIFtTb3VyY2U6SEdOQyBTeW1ib2w7QWNjOkhHTkM6NTI0ODJdXG4gIEVOU0cwMDAwMDI4NDMzMiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1pY3JvUk5BIDEzMDItMiBbU291cmNlOkhHTkMgU3ltYm9sO0FjYzpIR05DOjM1Mjk0XVxuICAgICAgICAgICAgICAuLi4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAuLi5cbiAgRU5TRzAwMDAwMjI0MjQwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQ1lDUyBwc2V1ZG9nZW5lIDQ5IFtTb3VyY2U6SEdOQyBTeW1ib2w7QWNjOkhHTkM6MjM5NDNdXG4gIEVOU0cwMDAwMDIyNzYyOSAgICAgICAgICBzb2x1dGUgY2FycmllciBmYW1pbHkgMjUgbWVtYmVyIDE1IHBzZXVkb2dlbmUgMSBbU291cmNlOkhHTkMgU3ltYm9sO0FjYzpIR05DOjE4NDk3XVxuICBFTlNHMDAwMDAyMzc5MTcgcG9seShBRFAtcmlib3NlKSBwb2x5bWVyYXNlIGZhbWlseSBtZW1iZXIgNCBwc2V1ZG9nZW5lIDEgW1NvdXJjZTpIR05DIFN5bWJvbDtBY2M6SEdOQzoxODUwMF1cbiAgRU5TRzAwMDAwMjMxNTE0ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIENDTlEgcHNldWRvZ2VuZSAyIFtTb3VyY2U6SEdOQyBTeW1ib2w7QWNjOkhHTkM6Mzg0MzZdXG4gIEVOU0cwMDAwMDIzNTg1NyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIENUQlAyIHBzZXVkb2dlbmUgMSBbU291cmNlOkhHTkMgU3ltYm9sO0FjYzpIR05DOjIzOTQwXVxuICAgICAgICAgICAgICAgICAgICBnZW5lX2lkX3ZlcnNpb24gICAgICBzeW1ib2wgZW50cmV6aWRcbiAgICAgICAgICAgICAgICAgICAgICAgIDxjaGFyYWN0ZXI+IDxjaGFyYWN0ZXI+ICAgPGxpc3Q+XG4gIEVOU0cwMDAwMDIyMzk3MiBFTlNHMDAwMDAyMjM5NzIuNSAgICAgRERYMTFMMSAgICAgICBOQVxuICBFTlNHMDAwMDAyMjcyMzIgRU5TRzAwMDAwMjI3MjMyLjUgICAgICBXQVNIN1AgICAgICAgTkFcbiAgRU5TRzAwMDAwMjc4MjY3IEVOU0cwMDAwMDI3ODI2Ny4xICAgTUlSNjg1OS0xICAgICAgIE5BXG4gIEVOU0cwMDAwMDI0MzQ4NSBFTlNHMDAwMDAyNDM0ODUuNSBNSVIxMzAyLTJIRyAgICAgICBOQVxuICBFTlNHMDAwMDAyODQzMzIgRU5TRzAwMDAwMjg0MzMyLjEgICBNSVIxMzAyLTIgICAgICAgTkFcbiAgICAgICAgICAgICAgLi4uICAgICAgICAgICAgICAgLi4uICAgICAgICAgLi4uICAgICAgLi4uXG4gIEVOU0cwMDAwMDIyNDI0MCBFTlNHMDAwMDAyMjQyNDAuMSAgICAgQ1lDU1A0OSAgICAgICBOQVxuICBFTlNHMDAwMDAyMjc2MjkgRU5TRzAwMDAwMjI3NjI5LjEgIFNMQzI1QTE1UDEgICAgICAgTkFcbiAgRU5TRzAwMDAwMjM3OTE3IEVOU0cwMDAwMDIzNzkxNy4xICAgICBQQVJQNFAxICAgICAgIE5BXG4gIEVOU0cwMDAwMDIzMTUxNCBFTlNHMDAwMDAyMzE1MTQuMSAgICAgIENDTlFQMiAgICAgICBOQVxuICBFTlNHMDAwMDAyMzU4NTcgRU5TRzAwMDAwMjM1ODU3LjEgICAgIENUQlAyUDEgICAgICAgTkFcbiAgLS0tLS0tLVxuICBzZXFpbmZvOiAyNSBzZXF1ZW5jZXMgZnJvbSBHUkNoMzggZ2Vub21lXG4ifQ== -->
-<pre><code>GRanges object with 60624 ranges and 8 metadata columns:
-                  seqnames            ranges strand |         gene_id   gene_name
-                     &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |     &lt;character&gt; &lt;character&gt;
-  ENSG00000223972     chr1       11869-14409      + | ENSG00000223972     DDX11L1
-  ENSG00000227232     chr1       14404-29570      - | ENSG00000227232      WASH7P
-  ENSG00000278267     chr1       17369-17436      - | ENSG00000278267   MIR6859-1
-  ENSG00000243485     chr1       29554-31109      + | ENSG00000243485 MIR1302-2HG
-  ENSG00000284332     chr1       30366-30503      + | ENSG00000284332   MIR1302-2
-              ...      ...               ...    ... .             ...         ...
-  ENSG00000224240     chrY 26549425-26549743      + | ENSG00000224240     CYCSP49
-  ENSG00000227629     chrY 26586642-26591601      - | ENSG00000227629  SLC25A15P1
-  ENSG00000237917     chrY 26594851-26634652      - | ENSG00000237917     PARP4P1
-  ENSG00000231514     chrY 26626520-26627159      - | ENSG00000231514      CCNQP2
-  ENSG00000235857     chrY 56855244-56855488      + | ENSG00000235857     CTBP2P1
-                                        gene_biotype seq_coord_system
-                                         &lt;character&gt;      &lt;character&gt;
-  ENSG00000223972 transcribed_unprocessed_pseudogene       chromosome
-  ENSG00000227232             unprocessed_pseudogene       chromosome
-  ENSG00000278267                              miRNA       chromosome
-  ENSG00000243485                             lncRNA       chromosome
-  ENSG00000284332                              miRNA       chromosome
-              ...                                ...              ...
-  ENSG00000224240               processed_pseudogene       chromosome
-  ENSG00000227629             unprocessed_pseudogene       chromosome
-  ENSG00000237917             unprocessed_pseudogene       chromosome
-  ENSG00000231514               processed_pseudogene       chromosome
-  ENSG00000235857               processed_pseudogene       chromosome
-                                                                                                   description
-                                                                                                   &lt;character&gt;
-  ENSG00000223972                            DEAD/H-box helicase 11 like 1 [Source:HGNC Symbol;Acc:HGNC:37102]
-  ENSG00000227232                        WASP family homolog 7, pseudogene [Source:HGNC Symbol;Acc:HGNC:38034]
-  ENSG00000278267                                          microRNA 6859-1 [Source:HGNC Symbol;Acc:HGNC:50039]
-  ENSG00000243485                                      MIR1302-2 host gene [Source:HGNC Symbol;Acc:HGNC:52482]
-  ENSG00000284332                                          microRNA 1302-2 [Source:HGNC Symbol;Acc:HGNC:35294]
-              ...                                                                                          ...
-  ENSG00000224240                                       CYCS pseudogene 49 [Source:HGNC Symbol;Acc:HGNC:23943]
-  ENSG00000227629          solute carrier family 25 member 15 pseudogene 1 [Source:HGNC Symbol;Acc:HGNC:18497]
-  ENSG00000237917 poly(ADP-ribose) polymerase family member 4 pseudogene 1 [Source:HGNC Symbol;Acc:HGNC:18500]
-  ENSG00000231514                                        CCNQ pseudogene 2 [Source:HGNC Symbol;Acc:HGNC:38436]
-  ENSG00000235857                                       CTBP2 pseudogene 1 [Source:HGNC Symbol;Acc:HGNC:23940]
-                    gene_id_version      symbol entrezid
-                        &lt;character&gt; &lt;character&gt;   &lt;list&gt;
-  ENSG00000223972 ENSG00000223972.5     DDX11L1       NA
-  ENSG00000227232 ENSG00000227232.5      WASH7P       NA
-  ENSG00000278267 ENSG00000278267.1   MIR6859-1       NA
-  ENSG00000243485 ENSG00000243485.5 MIR1302-2HG       NA
-  ENSG00000284332 ENSG00000284332.1   MIR1302-2       NA
-              ...               ...         ...      ...
-  ENSG00000224240 ENSG00000224240.1     CYCSP49       NA
-  ENSG00000227629 ENSG00000227629.1  SLC25A15P1       NA
-  ENSG00000237917 ENSG00000237917.1     PARP4P1       NA
-  ENSG00000231514 ENSG00000231514.1      CCNQP2       NA
-  ENSG00000235857 ENSG00000235857.1     CTBP2P1       NA
-  -------
-  seqinfo: 25 sequences from GRCh38 genome</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
