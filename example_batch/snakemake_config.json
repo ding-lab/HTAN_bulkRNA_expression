@@ -3,6 +3,6 @@
     "bam_map": "katmai.BamMap.cptac3_catalog_commit_ee6c404.dat",
     "star_index": "/diskmnt/Datasets/Reference/STAR_GRCh38_d1_vd1_d1_GENCODE_v34",
     "gtf": "/diskmnt/Datasets/Reference/STAR_GRCh38_d1_vd1_d1_GENCODE_v34/gencode.v34.annotation.gtf",
-    "gdc_gene_info": "/diskmnt/Datasets/Reference/GDC/gencode.gene.info.v22.tsv",
-    "workflow_root": "/diskmnt/Projects/cptac_scratch/CPTAC_expression/pipeline_workflow"
+    "gene_info": "/diskmnt/Datasets/Reference/STAR_GRCh38_d1_vd1_d1_GENCODE_v34/gencode.gene.info.v34.tsv",
+    "workflow_root": "/diskmnt/Projects/htan_bulk_rna/pipeline_workflow"
 }
