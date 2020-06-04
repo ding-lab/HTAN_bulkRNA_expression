@@ -1,0 +1,44 @@
+ENS_VER = '100'
+GENCODE_VER = '34'
+
+
+# rule download_ensembl_gtf:
+#     """Download Ensembl GTF."""
+#     output: f'upstream_sources/Homo_sapiens.GRCh38.{ENS_VER}.chr.gtf.gz'
+#     shell:
+#         "curl -L -o {output.ens_gtf} "
+#         f"ftp://ftp.ensembl.org/pub/release-{ENS_VER}/gtf/homo_sapiens/Homo_sapiens.GRCh38.{ENS_VER}.chr.gtf.gz"
+
+# rule rename_chromomsome_in_ens_gtf:
+#     input: rules.all_upstream_sources.input.ens_gtf
+#     output: gtf=f'final_outputs/Ensembl.{ENS_VER}.chr_renamed.gtf.gz'
+#     shell:
+#         "gunzip -c {input} "
+#         r"| sed -E 's/^([0-9]+|[XY])/chr\1/' "
+#         "| sed -E 's/^MT/chrM/' "
+#         "| gzip -c > {output.gtf}"
+
+
+rule download_gencode_gtf:
+    """Download Ensembl GTF."""
+    output: f'upstream_sources/gencode.v{GENCODE_VER}.annotation.gtf.gz'
+    shell:
+        "curl -L -o {output.ens_gtf} "
+        f"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_{GENCODE_VER}/gencode.{GENCODE_VER}.annotation.gtf.gz"
+
+
+rule download_ensdb:
+    """Download EnsDb SQLite database."""
+    output: f'upstream_sources/EnsDb.Hsapiens.v{ENS_VER}.sqlite'
+    shell:
+        "curl -L -o {output.ensdb} "
+        f"http://s3.amazonaws.com/annotationhub/AHEnsDbs/v{ENS_VER}/EnsDb.Hsapiens.v{ENS_VER}.sqlite"
+
+
+rule all_upstream_sources:
+    """Download all required upstream sources."""
+    input: 
+        gencode_gtf=rules.download_gencode_gtf.output[0],
+        ens_db=rules.download_ensdb.output[0]
+
+

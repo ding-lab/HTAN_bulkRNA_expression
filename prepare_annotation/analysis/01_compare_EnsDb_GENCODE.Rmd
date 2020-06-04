@@ -1,0 +1,82 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r, message=FALSE}
+library(GenomicFeatures)
+library(ensembldb)
+library(here)
+library(tidyverse)
+```
+
+```{r}
+dr_here()
+```
+
+```{r}
+edb = EnsDb(here('prepare_annotation/upstream_sources/EnsDb.Hsapiens.v100.sqlite'))
+
+gencode_txdb = GenomicFeatures::makeTxDbFromGFF(
+    here('prepare_annotation/upstream_sources/gencode.v34.annotation.gtf.gz'),
+    format = 'gtf',
+    dataSource = 'GENCODE v34',
+    organism = 'Homo sapiens'
+)
+```
+
+Reconfigure the chromosome names
+```{r}
+seqlevelsStyle(edb) = "UCSC"
+
+canonical_chroms_only_filter = AnnotationFilterList(
+    SeqNameFilter(str_c("chr", c(1:22, "X", "Y", "M"))),
+    GeneIdFilter("ENS", "startsWith")
+)
+```
+
+```{r}
+edb_genes = genes(edb, filter = canonical_chroms_only_filter)
+gencode_genes = genes(gencode_txdb)
+```
+
+```{r}
+overlap_ids = function(x_ids, y_ids) {
+    list(
+        shared = intersect(x_ids, y_ids),
+        unique_x = setdiff(x_ids, y_ids),
+        unique_y = setdiff(y_ids, x_ids)
+    )
+}
+```
+
+```{r}
+gene_overlap = overlap_ids(
+    names(edb_genes), 
+    names(gencode_genes) %>% str_replace('\\.\\d+$', '')
+)
+gene_overlap %>% map_int(length)
+```
+
+```{r}
+gene_overlap$unique_y
+```
+
+
+```{r}
+edb_txs = transcripts(edb, filter = canonical_chroms_only_filter)
+gencode_txs = transcripts(gencode_txdb)
+```
+
+```{r}
+tx_overlap = overlap_ids(
+    names(edb_txs), 
+    gencode_txs$tx_name %>% str_replace('\\.\\d+$', '')
+) 
+tx_overlap %>% map_int(length)
+```
+
+```{r}
+all(endsWith(tx_overlap$unique_y, '_PAR_Y'))
+```
+
