@@ -1759,25 +1759,37 @@ library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>GDC’s GENCODE v22 matches Ensembl release 79.</p>
+<p><a href="http://s3.amazonaws.com/annotationhub/AHEnsDbs/v79/EnsDb.Hsapiens.v79.sqlite" class="uri">http://s3.amazonaws.com/annotationhub/AHEnsDbs/v79/EnsDb.Hsapiens.v79.sqlite</a></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHJfaGVyZSgpXG5gYGAifQ== -->
-<pre class="r"><code>dr_here()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiaGVyZSgpIHN0YXJ0cyBhdCAvVXNlcnMvbGlhbmcvRG9jdW1lbnRzL2h0YW5fYnVsa19ybmFfcGlwZWxpbmUvcHJlcGFyZV9hbm5vdGF0aW9uLCBiZWNhdXNlIGl0IGNvbnRhaW5zIGEgZmlsZSBtYXRjaGluZyBgWy5dUnByb2okYCB3aXRoIGNvbnRlbnRzIG1hdGNoaW5nIGBeVmVyc2lvbjogYCBpbiB0aGUgZmlyc3QgbGluZVxuIn0= -->
-<pre><code>here() starts at /Users/liang/Documents/htan_bulk_rna_pipeline/prepare_annotation, because it contains a file matching `[.]Rproj$` with contents matching `^Version: ` in the first line</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZWRiID0gRW5zRGIoaGVyZSgndXBzdHJlYW1fc291cmNlcy9FbnNEYi5Ic2FwaWVucy52MTAwLnNxbGl0ZScpKVxuXG5nZW5jb2RlX3R4ZGIgPSBHZW5vbWljRmVhdHVyZXM6Om1ha2VUeERiRnJvbUdGRihcbiAgICBoZXJlKCd1cHN0cmVhbV9zb3VyY2VzL2dlbmNvZGUudjM0LmFubm90YXRpb24uZ3RmLmd6JyksXG4gICAgZm9ybWF0ID0gJ2d0ZicsXG4gICAgZGF0YVNvdXJjZSA9ICdHRU5DT0RFIHYzNCcsXG4gICAgb3JnYW5pc20gPSAnSG9tbyBzYXBpZW5zJ1xuKVxuYGBgIn0= -->
-<pre class="r"><code>edb = EnsDb(here('upstream_sources/EnsDb.Hsapiens.v100.sqlite'))
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2RjX2VkYiA9IEVuc0RiKCd+L0JveC9EaW5nX0xhYi9Qcm9qZWN0c19DdXJyZW50L0NQVEFDMy1HQk0vUmVzb3VyY2VzL0Fubm90YXRpb25zL0dEQy9FbnNEYi5Ic2FwaWVucy52NzkuR0VOQ09ERS52MjIuc3FsaXRlJylcblxuZ2RjX2dlbmVfaW5mbyA9IHJlYWRfdHN2KCd+L0Rvd25sb2Fkcy9nZW5jb2RlLmdlbmUuaW5mby52MjIudHN2JylcbmBgYCJ9 -->
+<pre class="r"><code>gdc_edb = EnsDb('~/Box/Ding_Lab/Projects_Current/CPTAC3-GBM/Resources/Annotations/GDC/EnsDb.Hsapiens.v79.GENCODE.v22.sqlite')
 
-gencode_txdb = GenomicFeatures::makeTxDbFromGFF(
-    here('upstream_sources/gencode.v34.annotation.gtf.gz'),
+gdc_gene_info = read_tsv('~/Downloads/gencode.gene.info.v22.tsv')</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBnZW5lX2lkID0gXHUwMDFiWzMxbWNvbF9jaGFyYWN0ZXIoKVx1MDAxYlszOW0sXG4gIGdlbmVfbmFtZSA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBzZXFuYW1lID0gXHUwMDFiWzMxbWNvbF9jaGFyYWN0ZXIoKVx1MDAxYlszOW0sXG4gIHN0YXJ0ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGVuZCA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBzdHJhbmQgPSBcdTAwMWJbMzFtY29sX2NoYXJhY3RlcigpXHUwMDFiWzM5bSxcbiAgZ2VuZV90eXBlID0gXHUwMDFiWzMxbWNvbF9jaGFyYWN0ZXIoKVx1MDAxYlszOW0sXG4gIGdlbmVfc3RhdHVzID0gXHUwMDFiWzMxbWNvbF9jaGFyYWN0ZXIoKVx1MDAxYlszOW0sXG4gIGhhdmFuYV9nZW5lID0gXHUwMDFiWzMxbWNvbF9jaGFyYWN0ZXIoKVx1MDAxYlszOW0sXG4gIGZ1bGxfbGVuZ3RoID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGV4b25fbGVuZ3RoID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGV4b25fbnVtID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW1cbilcbiJ9 -->
+<pre><code>Parsed with column specification:
+cols(
+  gene_id = [31mcol_character()[39m,
+  gene_name = [31mcol_character()[39m,
+  seqname = [31mcol_character()[39m,
+  start = [32mcol_double()[39m,
+  end = [32mcol_double()[39m,
+  strand = [31mcol_character()[39m,
+  gene_type = [31mcol_character()[39m,
+  gene_status = [31mcol_character()[39m,
+  havana_gene = [31mcol_character()[39m,
+  full_length = [32mcol_double()[39m,
+  exon_length = [32mcol_double()[39m,
+  exon_num = [32mcol_double()[39m
+)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuY29kZV90eGRiID0gR2Vub21pY0ZlYXR1cmVzOjptYWtlVHhEYkZyb21HRkYoXG4gICAgJ34vRG93bmxvYWRzL2dlbmNvZGUudjIyLmFubm90YXRpb24uZ3RmLmd6JyxcbiAgICBmb3JtYXQgPSAnZ3RmJyxcbiAgICBkYXRhU291cmNlID0gJ0dFTkNPREUgdjIyJyxcbiAgICBvcmdhbmlzbSA9ICdIb21vIHNhcGllbnMnXG4pXG5gYGAifQ== -->
+<pre class="r"><code>gencode_txdb = GenomicFeatures::makeTxDbFromGFF(
+    '~/Downloads/gencode.v22.annotation.gtf.gz',
     format = 'gtf',
-    dataSource = 'GENCODE v34',
+    dataSource = 'GENCODE v22',
     organism = 'Homo sapiens'
 )</code></pre>
 <!-- rnb-source-end -->
@@ -1789,11 +1801,23 @@ Make the TxDb object ... The &quot;phase&quot; metadata column contains non-NA v
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>Get extra annotaiton on the genes</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3RmX2dlbmUgPSBydHJhY2tsYXllcjo6aW1wb3J0KFxuICAgICd+L0Rvd25sb2Fkcy9nZW5jb2RlLnYyMi5hbm5vdGF0aW9uLmd0Zi5neicsIFxuICAgIGZvcm1hdCA9ICdHVEYnLFxuICAgIGZlYXR1cmUudHlwZSA9ICdnZW5lJ1xuKSBcbmBgYCJ9 -->
+<pre class="r"><code>gtf_gene = rtracklayer::import(
+    '~/Downloads/gencode.v22.annotation.gtf.gz', 
+    format = 'GTF',
+    feature.type = 'gene'
+) </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <p>Reconfigure the chromosome names</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VxbGV2ZWxzU3R5bGUoZWRiKSA9IFwiVUNTQ1wiXG5cbmNhbm9uaWNhbF9jaHJvbXNfb25seV9maWx0ZXIgPSBBbm5vdGF0aW9uRmlsdGVyTGlzdChcbiAgICBTZXFOYW1lRmlsdGVyKHN0cl9jKFwiY2hyXCIsIGMoMToyMiwgXCJYXCIsIFwiWVwiLCBcIk1cIikpKSxcbiAgICBHZW5lSWRGaWx0ZXIoXCJFTlNcIiwgXCJzdGFydHNXaXRoXCIpXG4pXG5gYGAifQ== -->
-<pre class="r"><code>seqlevelsStyle(edb) = &quot;UCSC&quot;
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VxbGV2ZWxzU3R5bGUoZ2RjX2VkYikgPSBcIlVDU0NcIlxuXG5jYW5vbmljYWxfY2hyb21zX29ubHlfZmlsdGVyID0gQW5ub3RhdGlvbkZpbHRlckxpc3QoXG4gICAgU2VxTmFtZUZpbHRlcihzdHJfYyhcImNoclwiLCBjKDE6MjIsIFwiWFwiLCBcIllcIiwgXCJNXCIpKSksXG4gICAgR2VuZUlkRmlsdGVyKFwiRU5TXCIsIFwic3RhcnRzV2l0aFwiKVxuKVxuYGBgIn0= -->
+<pre class="r"><code>seqlevelsStyle(gdc_edb) = &quot;UCSC&quot;
 
 canonical_chroms_only_filter = AnnotationFilterList(
     SeqNameFilter(str_c(&quot;chr&quot;, c(1:22, &quot;X&quot;, &quot;Y&quot;, &quot;M&quot;))),
@@ -1802,99 +1826,110 @@ canonical_chroms_only_filter = AnnotationFilterList(
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>GDC’s gene info has</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZWRiX2dlbmVzID0gZ2VuZXMoZWRiLCBmaWx0ZXIgPSBjYW5vbmljYWxfY2hyb21zX29ubHlfZmlsdGVyKVxuZ2VuY29kZV9nZW5lcyA9IGdlbmVzKGdlbmNvZGVfdHhkYilcbmBgYCJ9 -->
-<pre class="r"><code>edb_genes = genes(edb, filter = canonical_chroms_only_filter)
-gencode_genes = genes(gencode_txdb)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbmFtZXMoZ2RjX2dlbmVfaW5mbylcbmBgYCJ9 -->
+<pre class="r"><code>colnames(gdc_gene_info)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3ZlcmxhcF9pZHMgPSBmdW5jdGlvbih4X2lkcywgeV9pZHMpIHtcbiAgICBsaXN0KFxuICAgICAgICBzaGFyZWQgPSBpbnRlcnNlY3QoeF9pZHMsIHlfaWRzKSxcbiAgICAgICAgdW5pcXVlX3ggPSBzZXRkaWZmKHhfaWRzLCB5X2lkcyksXG4gICAgICAgIHVuaXF1ZV95ID0gc2V0ZGlmZih5X2lkcywgeF9pZHMpXG4gICAgKVxufVxuYGBgIn0= -->
-<pre class="r"><code>overlap_ids = function(x_ids, y_ids) {
-    list(
-        shared = intersect(x_ids, y_ids),
-        unique_x = setdiff(x_ids, y_ids),
-        unique_y = setdiff(y_ids, x_ids)
-    )
-}</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuZV9vdmVybGFwID0gb3ZlcmxhcF9pZHMoXG4gICAgbmFtZXMoZWRiX2dlbmVzKSwgXG4gICAgbmFtZXMoZ2VuY29kZV9nZW5lcykgJT4lIHN0cl9yZXBsYWNlKCdcXFxcLlxcXFxkKyQnLCAnJylcbilcbmdlbmVfb3ZlcmxhcCAlPiUgbWFwX2ludChsZW5ndGgpXG5gYGAifQ== -->
-<pre class="r"><code>gene_overlap = overlap_ids(
-    names(edb_genes), 
-    names(gencode_genes) %&gt;% str_replace('\\.\\d+$', '')
-)
-gene_overlap %&gt;% map_int(length)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICBzaGFyZWQgdW5pcXVlX3ggdW5pcXVlX3kgXG4gICA2MDYyNCAgICAgICAgMCAgICAgICA0NSBcbiJ9 -->
-<pre><code>  shared unique_x unique_y 
-   60624        0       45 </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcImdlbmVfaWRcIiAgICAgXCJnZW5lX25hbWVcIiAgIFwic2VxbmFtZVwiICAgICBcInN0YXJ0XCIgICAgICAgXCJlbmRcIiAgICAgICAgIFwic3RyYW5kXCIgICAgICBcImdlbmVfdHlwZVwiICBcbiBbOF0gXCJnZW5lX3N0YXR1c1wiIFwiaGF2YW5hX2dlbmVcIiBcImZ1bGxfbGVuZ3RoXCIgXCJleG9uX2xlbmd0aFwiIFwiZXhvbl9udW1cIiAgIFxuIn0= -->
+<pre><code> [1] &quot;gene_id&quot;     &quot;gene_name&quot;   &quot;seqname&quot;     &quot;start&quot;       &quot;end&quot;         &quot;strand&quot;      &quot;gene_type&quot;  
+ [8] &quot;gene_status&quot; &quot;havana_gene&quot; &quot;full_length&quot; &quot;exon_length&quot; &quot;exon_num&quot;   </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuZV9vdmVybGFwJHVuaXF1ZV95XG5gYGAifQ== -->
-<pre class="r"><code>gene_overlap$unique_y</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChnZGNfZ2VuZV9pbmZvKVxuYGBgIn0= -->
+<pre class="r"><code>head(gdc_gene_info)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkVOU0cwMDAwMDAwMjU4Ni4yMF9QQVJfWVwiIFwiRU5TRzAwMDAwMTI0MzMzLjE2X1BBUl9ZXCIgXCJFTlNHMDAwMDAxMjQzMzQuMTdfUEFSX1lcIiBcIkVOU0cwMDAwMDE2NzM5My4xOF9QQVJfWVwiXG4gWzVdIFwiRU5TRzAwMDAwMTY4OTM5LjExX1BBUl9ZXCIgXCJFTlNHMDAwMDAxNjkwODQuMTVfUEFSX1lcIiBcIkVOU0cwMDAwMDE2OTA5My4xNl9QQVJfWVwiIFwiRU5TRzAwMDAwMTY5MTAwLjE0X1BBUl9ZXCJcbiBbOV0gXCJFTlNHMDAwMDAxNzg2MDUuMTNfUEFSX1lcIiBcIkVOU0cwMDAwMDE4MjE2Mi4xMV9QQVJfWVwiIFwiRU5TRzAwMDAwMTgyMzc4LjE0X1BBUl9ZXCIgXCJFTlNHMDAwMDAxODI0ODQuMTVfUEFSX1lcIlxuWzEzXSBcIkVOU0cwMDAwMDE4NTIwMy4xMl9QQVJfWVwiIFwiRU5TRzAwMDAwMTg1MjkxLjEyX1BBUl9ZXCIgXCJFTlNHMDAwMDAxODU5NjAuMTRfUEFSX1lcIiBcIkVOU0cwMDAwMDE5NjQzMy4xM19QQVJfWVwiXG5bMTddIFwiRU5TRzAwMDAwMTk3OTc2LjEyX1BBUl9ZXCIgXCJFTlNHMDAwMDAxOTgyMjMuMTZfUEFSX1lcIiBcIkVOU0cwMDAwMDIwNTc1NS4xMl9QQVJfWVwiIFwiRU5TRzAwMDAwMjE0NzE3LjEyX1BBUl9ZXCJcblsyMV0gXCJFTlNHMDAwMDAyMjMyNzQuNl9QQVJfWVwiICBcIkVOU0cwMDAwMDIyMzQ4NC43X1BBUl9ZXCIgIFwiRU5TRzAwMDAwMjIzNTExLjdfUEFSX1lcIiAgXCJFTlNHMDAwMDAyMjM1NzEuNl9QQVJfWVwiIFxuWzI1XSBcIkVOU0cwMDAwMDIyMzc3My43X1BBUl9ZXCIgIFwiRU5TRzAwMDAwMjI1NjYxLjdfUEFSX1lcIiAgXCJFTlNHMDAwMDAyMjYxNzkuNl9QQVJfWVwiICBcIkVOU0cwMDAwMDIyNzE1OS44X1BBUl9ZXCIgXG5bMjldIFwiRU5TRzAwMDAwMjI4NDEwLjZfUEFSX1lcIiAgXCJFTlNHMDAwMDAyMjg1NzIuN19QQVJfWVwiICBcIkVOU0cwMDAwMDIyOTIzMi42X1BBUl9ZXCIgIFwiRU5TRzAwMDAwMjMwNTQyLjZfUEFSX1lcIiBcblszM10gXCJFTlNHMDAwMDAyMzQ2MjIuNl9QQVJfWVwiICBcIkVOU0cwMDAwMDIzNDk1OC42X1BBUl9ZXCIgIFwiRU5TRzAwMDAwMjM2MDE3LjhfUEFSX1lcIiAgXCJFTlNHMDAwMDAyMzY4NzEuN19QQVJfWVwiIFxuWzM3XSBcIkVOU0cwMDAwMDIzNzA0MC42X1BBUl9ZXCIgIFwiRU5TRzAwMDAwMjM3NTMxLjZfUEFSX1lcIiAgXCJFTlNHMDAwMDAyMzc4MDEuNl9QQVJfWVwiICBcIkVOU0cwMDAwMDI2NTY1OC42X1BBUl9ZXCIgXG5bNDFdIFwiRU5TRzAwMDAwMjcwNzI2LjZfUEFSX1lcIiAgXCJFTlNHMDAwMDAyNzUyODcuNV9QQVJfWVwiICBcIkVOU0cwMDAwMDI3NzEyMC41X1BBUl9ZXCIgIFwiRU5TRzAwMDAwMjgwNzY3LjNfUEFSX1lcIiBcbls0NV0gXCJFTlNHMDAwMDAyODE4NDkuM19QQVJfWVwiIFxuIn0= -->
-<pre><code> [1] &quot;ENSG00000002586.20_PAR_Y&quot; &quot;ENSG00000124333.16_PAR_Y&quot; &quot;ENSG00000124334.17_PAR_Y&quot; &quot;ENSG00000167393.18_PAR_Y&quot;
- [5] &quot;ENSG00000168939.11_PAR_Y&quot; &quot;ENSG00000169084.15_PAR_Y&quot; &quot;ENSG00000169093.16_PAR_Y&quot; &quot;ENSG00000169100.14_PAR_Y&quot;
- [9] &quot;ENSG00000178605.13_PAR_Y&quot; &quot;ENSG00000182162.11_PAR_Y&quot; &quot;ENSG00000182378.14_PAR_Y&quot; &quot;ENSG00000182484.15_PAR_Y&quot;
-[13] &quot;ENSG00000185203.12_PAR_Y&quot; &quot;ENSG00000185291.12_PAR_Y&quot; &quot;ENSG00000185960.14_PAR_Y&quot; &quot;ENSG00000196433.13_PAR_Y&quot;
-[17] &quot;ENSG00000197976.12_PAR_Y&quot; &quot;ENSG00000198223.16_PAR_Y&quot; &quot;ENSG00000205755.12_PAR_Y&quot; &quot;ENSG00000214717.12_PAR_Y&quot;
-[21] &quot;ENSG00000223274.6_PAR_Y&quot;  &quot;ENSG00000223484.7_PAR_Y&quot;  &quot;ENSG00000223511.7_PAR_Y&quot;  &quot;ENSG00000223571.6_PAR_Y&quot; 
-[25] &quot;ENSG00000223773.7_PAR_Y&quot;  &quot;ENSG00000225661.7_PAR_Y&quot;  &quot;ENSG00000226179.6_PAR_Y&quot;  &quot;ENSG00000227159.8_PAR_Y&quot; 
-[29] &quot;ENSG00000228410.6_PAR_Y&quot;  &quot;ENSG00000228572.7_PAR_Y&quot;  &quot;ENSG00000229232.6_PAR_Y&quot;  &quot;ENSG00000230542.6_PAR_Y&quot; 
-[33] &quot;ENSG00000234622.6_PAR_Y&quot;  &quot;ENSG00000234958.6_PAR_Y&quot;  &quot;ENSG00000236017.8_PAR_Y&quot;  &quot;ENSG00000236871.7_PAR_Y&quot; 
-[37] &quot;ENSG00000237040.6_PAR_Y&quot;  &quot;ENSG00000237531.6_PAR_Y&quot;  &quot;ENSG00000237801.6_PAR_Y&quot;  &quot;ENSG00000265658.6_PAR_Y&quot; 
-[41] &quot;ENSG00000270726.6_PAR_Y&quot;  &quot;ENSG00000275287.5_PAR_Y&quot;  &quot;ENSG00000277120.5_PAR_Y&quot;  &quot;ENSG00000280767.3_PAR_Y&quot; 
-[45] &quot;ENSG00000281849.3_PAR_Y&quot; </code></pre>
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MTIsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNVZVdjIvVFFCUytwSEhhcG1rQjBaR3BZcXRzK1h4MkVrc0lFcEZTSklvYnBTbnRGbHpIYlNMY2MvQVBLRVBWcml6d0I3QlVnaFVKSkNUK0JKWU9qSWlKaGIwTEMwUERuYytYeGlZdHhkTDV2ZmQ5OTcyN2QvZnNabjBURlRZTEFJQUpNSkVuUXlBdUVOWmI5OFFLQUxrc0NUSWdCNmFwM1NPVHJoT25TTVpWTXZJeGNXM0pXRnVXNmFNb1NDOHJrdlkzZ1NxeXJJOGxaQlZxRWh4RGxCQWFTMEJVVVJWSkdiTjRHYUV5VVNSM04xbXZiMEs0d2hNVm13MElSYVEySUpMS1o1Z202ckxTcUVoUWpyR1paa01WTlIydW5PMWhjbTE5dVFVYmZPVkM3UzVFdXFyUnZTU1h6RmxkRC82bmp4SStBSE0wWC9XTGRFanZvL3JyK0lUYUdnbzNJcnNQTkVyVURtNDFma1MyYmxBNzFCM2ZqSFExMFB6R2RDL2Z4YnJQajVudTFWZW1jNnBNTjdyL3pDSjN4RXNnaXluMVF1Q1oyTGU4M3BiZGFZZTQ3N21XN2Z2RTcvdDIySEYzYkd6ekEzVjYyR29hdFV1Rjh4Y2tHczhsdHlVOE1GWTNEQjRZcTQrV1Z2NGRKRFFzU0dhZFgyMjE3cTgvWkIxSUhyMEVoNjJaNGlBaHorUEloNk9leDZGU1JSbjJZSUtEbXFiTDZybGN1VnlLdmdiV0VtKy9SL2RjL2ZueEtMS2ZEQllmM1diMk5ldUQ2bjRmZ05GV2VuT0Q0ZTlqZXpqRjdNR0hpM1VMTVE1ak94OWJKZ2QzVHBJMjliTVJzTGxyKy9GaEYzbEgwR3R0OXpweE9CMkZkQ0xuZmZ2cFNDajRnZWtGY1RCaFk2N0wrN1JEazFtQ0YzMHVtNGtBb2cxQ24wTmQ4NW1KemZaSXk4MXNoNDdUZG15OEUzUTVaTys1T0FsTlJSQU9kMVBsVFh2dWM0bVhPRXRHOXBDOEJvUEI3L1E1V0k3cDgzUGdZS0ZqQnFhMDdkRlNBVGhOU1NiZGZ0QnpNUkZsNmQ5YVNJa3pYZ3E0RW1LNms0NW9kVVA4UkN6UkJTS2FQYk94bngveGkyeko3Q0JPSmZDVEpiWDNoa2NrT09hVzdjVEJIS2s0S2xqcWV6M01iNlZBVUY4SzNNRGs4d3FXNjNBa3FnMmMvZ0VrdE9ISHBBWUFBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["gene_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gene_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seqname"],"name":[3],"type":["chr"],"align":["left"]},{"label":["start"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["end"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["strand"],"name":[6],"type":["chr"],"align":["left"]},{"label":["gene_type"],"name":[7],"type":["chr"],"align":["left"]},{"label":["gene_status"],"name":[8],"type":["chr"],"align":["left"]},{"label":["havana_gene"],"name":[9],"type":["chr"],"align":["left"]},{"label":["full_length"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["exon_length"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["exon_num"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"ENSG00000223972.5","2":"DDX11L1","3":"chr1","4":"11869","5":"14409","6":"+","7":"transcribed_unprocessed_pseudogene","8":"KNOWN","9":"OTTHUMG00000000961.2","10":"2541","11":"1735","12":"9"},{"1":"ENSG00000238009.5","2":"RP11-34P13.7","3":"chr1","4":"89295","5":"133723","6":"-","7":"lincRNA","8":"NOVEL","9":"OTTHUMG00000001096.2","10":"44429","11":"3726","12":"17"},{"1":"ENSG00000230415.1","2":"RP5-902P8.10","3":"chr1","4":"1275223","5":"1280420","6":"+","7":"lincRNA","8":"NOVEL","9":"OTTHUMG00000002234.2","10":"5198","11":"513","12":"5"},{"1":"ENSG00000236335.1","2":"RP4-591L5.1","3":"chr1","4":"30409560","5":"30411638","6":"-","7":"lincRNA","8":"NOVEL","9":"OTTHUMG00000003682.1","10":"2079","11":"507","12":"3"},{"1":"ENSG00000213842.2","2":"SUGT1P2","3":"chr3","4":"32752910","5":"32753901","6":"+","7":"processed_pseudogene","8":"KNOWN","9":"OTTHUMG00000155904.1","10":"992","11":"992","12":"1"},{"1":"ENSG00000227337.1","2":"AC139452.2","3":"chr3","4":"32785646","5":"32786116","6":"+","7":"processed_pseudogene","8":"KNOWN","9":"OTTHUMG00000155776.1","10":"471","11":"471","12":"1"}],"options":{"columns":{"min":{},"max":[10],"total":[12]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZWRiX2dlbmVzID0gZ2VuZXMoZ2RjX2VkYiwgZmlsdGVyID0gY2Fub25pY2FsX2Nocm9tc19vbmx5X2ZpbHRlcilcbmdlbmNvZGVfZ2VuZXMgPSBnZW5lcyhnZW5jb2RlX3R4ZGIpICU+JSBzb3J0KGlnbm9yZS5zdHJhbmQgPSBUUlVFKVxuYGBgIn0= -->
+<pre class="r"><code>edb_genes = genes(gdc_edb, filter = canonical_chroms_only_filter)
+gencode_genes = genes(gencode_txdb) %&gt;% sort(ignore.strand = TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubnVtX2V4b25zX3RibCA9IHRyYW5zY3JpcHRMZW5ndGhzKGdlbmNvZGVfdHhkYikgJT4lXG4gICAgZ3JvdXBfYnkoZ2VuZV9pZCkgJT4lXG4gICAgc3VtbWFyaXplKGV4b25fbnVtID0gc3VtKG5leG9uKSkgJT4lXG4gICAgdW5ncm91cCgpXG5gYGAifQ== -->
+<pre class="r"><code>num_exons_tbl = transcriptLengths(gencode_txdb) %&gt;%
+    group_by(gene_id) %&gt;%
+    summarize(exon_num = sum(nexon)) %&gt;%
+    ungroup()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== -->
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZWRiX3R4cyA9IHRyYW5zY3JpcHRzKGVkYiwgZmlsdGVyID0gY2Fub25pY2FsX2Nocm9tc19vbmx5X2ZpbHRlcilcbmdlbmNvZGVfdHhzID0gdHJhbnNjcmlwdHMoZ2VuY29kZV90eGRiKVxuYGBgIn0= -->
-<pre class="r"><code>edb_txs = transcripts(edb, filter = canonical_chroms_only_filter)
-gencode_txs = transcripts(gencode_txdb)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZXhvbnNfcGVyX2dlbmUgPSBleG9uc0J5KGdlbmNvZGVfdHhkYiwgYnkgPSAnZ2VuZScpXG5cbmV4b25fbGVuZ3RoX3RibCA9IGVuZG9hcHBseSh3aWR0aChHZW5vbWljUmFuZ2VzOjpyZWR1Y2UoZXhvbnNfcGVyX2dlbmUpKSwgc3VtKSAlPiUgXG4gICAgdW5saXN0KCkgJT4lXG4gICAgZW5mcmFtZShuYW1lID0gJ2dlbmVfaWQnLCB2YWx1ZSA9ICdleG9uX2xlbmd0aCcpXG5gYGAifQ== -->
+<pre class="r"><code>exons_per_gene = exonsBy(gencode_txdb, by = 'gene')
+
+exon_length_tbl = endoapply(width(GenomicRanges::reduce(exons_per_gene)), sum) %&gt;% 
+    unlist() %&gt;%
+    enframe(name = 'gene_id', value = 'exon_length')</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHhfb3ZlcmxhcCA9IG92ZXJsYXBfaWRzKFxuICAgIG5hbWVzKGVkYl90eHMpLCBcbiAgICBnZW5jb2RlX3R4cyR0eF9uYW1lICU+JSBzdHJfcmVwbGFjZSgnXFxcXC5cXFxcZCskJywgJycpXG4pIFxudHhfb3ZlcmxhcCAlPiUgbWFwX2ludChsZW5ndGgpXG5gYGAifQ== -->
-<pre class="r"><code>tx_overlap = overlap_ids(
-    names(edb_txs), 
-    gencode_txs$tx_name %&gt;% str_replace('\\.\\d+$', '')
-) 
-tx_overlap %&gt;% map_int(length)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuZV9pbmZvX3RibCA9IGd0Zl9nZW5lICU+JSBcbiAgICBhcy5kYXRhLmZyYW1lKCkgJT4lIFxuICAgIGFzX3RpYmJsZSgpICU+JVxuICAgIG11dGF0ZShmdWxsX2xlbmd0aCA9IHdpZHRoKGd0Zl9nZW5lKSkgJT4lXG4gICAgbGVmdF9qb2luKGV4b25fbGVuZ3RoX3RibCwgYnkgPSAnZ2VuZV9pZCcpICU+JVxuICAgIGxlZnRfam9pbihudW1fZXhvbnNfdGJsLCBieSA9ICdnZW5lX2lkJykgJT4lXG4gICAgc2VsZWN0KGdlbmVfaWQsIGdlbmVfbmFtZSwgc2VxbmFtZT1zZXFuYW1lcywgc3RhcnQsIGVuZCwgc3RyYW5kLCBnZW5lX3R5cGUsIGdlbmVfc3RhdHVzLCBoYXZhbmFfZ2VuZSwgZnVsbF9sZW5ndGgsIGV4b25fbGVuZ3RoLCBleG9uX251bSlcbmBgYCJ9 -->
+<pre class="r"><code>gene_info_tbl = gtf_gene %&gt;% 
+    as.data.frame() %&gt;% 
+    as_tibble() %&gt;%
+    mutate(full_length = width(gtf_gene)) %&gt;%
+    left_join(exon_length_tbl, by = 'gene_id') %&gt;%
+    left_join(num_exons_tbl, by = 'gene_id') %&gt;%
+    select(gene_id, gene_name, seqname=seqnames, start, end, strand, gene_type, gene_status, havana_gene, full_length, exon_length, exon_num)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICBzaGFyZWQgdW5pcXVlX3ggdW5pcXVlX3kgXG4gIDIyNzg4NyAgICAgICAgMCAgICAgIDE2MSBcbiJ9 -->
-<pre><code>  shared unique_x unique_y 
-  227887        0      161 </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWxsKGVuZHNXaXRoKHR4X292ZXJsYXAkdW5pcXVlX3ksICdfUEFSX1knKSlcbmBgYCJ9 -->
-<pre class="r"><code>all(endsWith(tx_overlap$unique_y, '_PAR_Y'))</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWxsX2VxdWFsKFxuICAgIGdlbmVfaW5mb190YmwsXG4gICAgZ2RjX2dlbmVfaW5mbyxcbiAgICBjb252ZXJ0ID0gVFJVRVxuKVxuYGBgIn0= -->
+<pre class="r"><code>all_equal(
+    gene_info_tbl,
+    gdc_gene_info,
+    convert = TRUE
+)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
 <pre><code>[1] TRUE</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>PAR genes</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuZV9pbmZvX3RibCAlPiVcbiAgICBmaWx0ZXIoc3RhcnRzV2l0aChnZW5lX2lkLCAnRU5TR1InKSlcbmBgYCJ9 -->
+<pre class="r"><code>gene_info_tbl %&gt;%
+    filter(startsWith(gene_id, 'ENSGR'))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MTIsIm5yb3ciOjUwfSwicmRmIjoiSDRzSUFBQUFBQUFBQTkxWmE0eGJSeFUrNjJ0N2Q1M0hwbkUyM1lTcXlxTjVsYXh6Nzh5OU0vZXFsTWI3eW03ajNkelltMlpUcXF3Yzc5M1l6Y1plYkcrYjhnTUJQd0FwQ0lUS1F4U0JLbFJLaWxva21vYitRQUZFUVNxcWVEWVNxQ0tGSDBFVUNnSWtSQ1hJZzNPOWQreHJlNjZicE0wUFdHbjJuak5uenVNN2MyWjJaalk5TWtOak16RUFVRUNKWW9zZ0NaRkQwMk9ESmtBNGhFd1hoS0hYL1o3Q1FYRWtWbUpiZzQxNGd0dEdwekw3MGlyK0VHSWFuQ1FNVDdDMkx0Qk1Rcm1aMExSMkNUZVphalFrZm1OTTQxWkNiMWRobkZvMG9SbnRLcVptNmxaQ1lvc2J4T1FKS3RGUU9lTXlEYXBiaGxuMzdnL0xJcFRJd2pJTmk2bFNKSlFiVkpQYU1oalRFaElncXNFTkkyRzFPN0ZNUWhDN0JBblREVTJWT1dHNnFWbFNBYlZNdVliQjVOZ1pOYWtoQlVJSjF5VUNUQXF4TkJrUVptbHFRTGFZeWFWSm9RekxKY0ZrdGxSTG1oU3NPNDJSaE5rdXNMakZtVFRCVEtkb1M1VmhORFRwTEZLZEVXbEZZRnltTHE5dGFuQ3BMVTNuaUxFOVlNSzVSbFJaQldOMWNTcE5sMnJvc3JCUVpKZ3NvYkgyckREVG9sWTlLMDBWYktweTdGelZWUmwyZ21tVUZ5b3hkWG1oWWlJeFhaTGR3N1dsU3hjOFZ6bGg4c1ZJVk44ME5tMUZyaGRaWUp3Wk9wV21tR3VHaFlYWHZPLzFwVkxxa2FsaGxRNFNhMWlyN3lGUk96VThNMUxuOWszYlE3WklkVzlxQWhWVVpnb28zYlp0a3pRZDh0aFZhVnVqZ3pvemhyQUlCS29WazA0MSs2RlNkamFUdG1YamhLMmVzZVNRYmRoMVpEMzcwOU9hYVJ1Q0QyZkdEOHo0REdpRFZMVW0zZDFFQkpPMlU1cHVDM3VSNFhScVRJQ05EbWZHU0RycGNiR2hHWWI3bzlISVZxTkhiK3NSTnJvbko5SVUxMFRiQUJGQWIzb3FhV1JzM1JMMUg1bEkwYnJUN2t4cW1CakpsbHhxYXIwam1abWNUZzBtTThKY3BOWWhHTXp6RVdHM083ay9hV3RjV0E2N0E1dFNTeXcrcWpVS3E2bXpucCtSOFhSR0pMUzN4Z3hPVE5lZFB6ZzBXcThDRnpsVFRhdWV6QkhMc3JWV0lDSlBZVmNzekdUczlCRmFCelE1VWxlTGp0amoxQlk2a1FlU2t6WVhNejg5UERxazJVU0VINTFPMjhOTUZFOTRJbVdsUlcwbDc4Zmk1cFExbGtyMGNESXprZFo4M0hoZE5kWVlMbHlOak14b1dnbzNFMUJXMVJZSHdNRC9SMnM2L1VRWG5FZWNoWXEzQld3UXFjemx5NXFQSmo2YSttamRSeHMrbXZsbzdxTk5IMTJ2Qk5lWDZtYzBQMFA4RFBVenVwOHgvQXp6TTl6UG1IN0dId0h4UjBEOEVSQS8rQmtmZmNSSFQ3YWtOWkpieUZaRVZ1dTVucy9tcXFVeVVsZmR0VmVyS3VWM2V5RE1qMEg0NjUrRjhCOWVoOGpBYVlqODhTbUkvQ1VNVWVjUWRGKzVCajBITDBEdngzOERmWGVzZ3I3Y283RDJ6b3NRZjJndnhNKzlDZkVYM3cveDgzc2cvcjJqRVArK0R2RmZiNEoxems3bzMzNEcrcWRlZ2Y3Y005QmZVR0Q5d2Qwd01MRUxCcDc2RW13c3ZRRWIzem9MbXk5ZWhxMWZQUXpiL3Y1cDJQR0xIZGgrQkR0ZXZ3eTcxcHhRbkZXL1Zaei9KSlg1c3l1VitaOXNVL0pqTHl2NTJlZVYvR2NjSmY5TVdzbi84aTBsLzJlaTVQOXhuNUsvTXREQWM2a0M0U2N2US9oaURzSi91Z2V4bklhb3VoOGlmOTBHMGNXSG9QdmFHUFNreHlIVzl5cjA3YjRYK2dybllPMUhweUIrOVRtSWZ3ZmpmL0VUaU9jeHhITUc4WHdZOFh3UitqZHNodjY5MDlELzRNUFEvL2luWUgzaWgzQjdOUU1EbFYvQmhyVVRzUEdWZzdEeHlqaHNWejhQVzU5K0FyYnZPbzVZNW1IbjZaL0NqamNvN0xwd3IrTHNpeXZPdFUzSy9Bc1I1Zmg1VGNtUDl5djUzR1lsLzlJR0pmKzNGNVQ4YTE5QkhHT0k1Mk5LSVhMZXQrcTd2QmJxOEEyMWpQUHpyYTFWdjVOT0tNQitFTjFCNXBabjZKcFhrWXBYa1YzdkZjU2dJTzVlSHFxSW9mTGlYUU9OODhMNnBlSml1WlJ6S2hWbmJuYXg0aXpObFk0N1JjZVRya1paMVNrVVozT2x1VUx4ZU1mZTNteXhXcWc0eFVwbjViWmhQU2NMbGR3cy9wRVZmNVlXQ3NWY2cxM1hJYnhPTXJuM0d6QitJOWdqSndzTm96ZkRoTXNOK2tZY3QrQzV6amw0NTcwdGZsdllBRXUxd0dZTHhXcTVWQ3prcmoraFc2cmxiTEdTS3hlTzRUeDFyTmZyaTBQYSsrN1cyUzJ6SmxLeFdBMmE4dXZQVmxPU2d6YUM1dTBpc24vcXdPR3BkOEpNSFhoZ05QWDJ6TTFZdTRVUjNJeWZkNWY1bnduMGx1TnByc2gxQjZhbnh3OU43bHQrUk5BWjVTUWhseEhDck1aTnNGMm0xKytOTFRKTjliM2Z0Y21NQUgrYWFWa1dRVDFjbzlmd0ozQU03V0JiN1NEVE9zZ0NjYUpNNzZCbkJNZ1kxMmxRWGpWaVVGcDdpRmpHZWIzZm9CaXM0SGt3ek9EWW1kWkJqM1dROFE0Mk8rU2YwV0NiekFpcVFaUUYxaWZLT3N3Tk13UDg0ZHlvcklPZWxURGVMdWUrWjc5MkdRbTJ6V245NWJOdFBYRWpLRDhvbzhGcjFBek1PZXBaQVhvNkx0SEFkWVEyQTljSzRTVEFuL3RxYi9MZ09IbGdUYUhNZlNqcm1ITWNZOWIyQnUrbUVoa0ZLSHdaZ0wrS3gvZWpBRC9Iay8vNEdUekJid0ZZMFlQZmNSeTNCUERKeTdqOW9WNzBQb0JqZUtEL1doSDc3L2ZhZmw4N0JYRDIzd0FibmtQOUp3SDJYQUw0OFErZ2ErdE9nTHUvQ1hEeTJ3QWZlQmo5ZmdIQzZTZmNKeE1BOHpYVTJ3dnczUmlHYmdLOGhMRlkrRlYrai8xbzY1OFlheGZ1djhvaUFEMEhNSlpEdlc4QXhQdFJqdm85VHpmd2RDa0FBM3ZROStlUWZoWmdLOGZ2cFdVOElhV0I1N1pOeUtld29lOXViS3YvRll3bitpMzBVY1d4TnNhTjlsWTlqL29uQVByZVJGM2NmMEw0RGQyRk5yQ0ZUZ09zZlh3WnorMmJjZno3QUZaZXdEanVhZUNKbldqZzZYMFphdjluQ3QrSmVyRmxQSkdORFR5MUc1bUZiYlZIbXlDL0RhNzNlTVFJaUEyZWhmYWJvV2p2Z2VWL1hMbi8zK3JEbHNBVzl1Zzd2SDdYMWhidkcvUDA3dkw0b3kyK2Qvdm9BYytXSzkvbjlVVmFIenFLMlpPT2VPaFlLYzdRN3JGdnRqQW56cGMxMWgwbzVCWG5nejQyVXFsbXkrSXdxamhGb1JldHVPZlFaaXZWeHhhRjJvcGFCK3BXbHlxaUs1OTlKRnZNenZwT3FDdm1seFlXWmhlYzR2RnFYblE1cDByRjVxNmVXbGR4NldRTHZONXk2ZEdFZ09qT1krZ2orQXVYNU04Q3JzbXh1V3cxbTVndnUraHFWK1VtYzkybHhXcWhWRVJqb2JnM09YN2xybkpMeDVxbG91dDhiakNYWHlxZUdOU0lid2JCaTZqTHF5NUJyMXoyR1JhUlJVUTJFVytoY1hCZnlCNXpGc1NWQVZIV1FDWVd5M2kzRWxDd3Q1S29scXBaTVM2V0t5MkludVYzZ0t2L0JSQTMyTUpwSFFBQSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["gene_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gene_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seqname"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["start"],"name":[4],"type":["int"],"align":["right"]},{"label":["end"],"name":[5],"type":["int"],"align":["right"]},{"label":["strand"],"name":[6],"type":["fctr"],"align":["left"]},{"label":["gene_type"],"name":[7],"type":["chr"],"align":["left"]},{"label":["gene_status"],"name":[8],"type":["chr"],"align":["left"]},{"label":["havana_gene"],"name":[9],"type":["chr"],"align":["left"]},{"label":["full_length"],"name":[10],"type":["int"],"align":["right"]},{"label":["exon_length"],"name":[11],"type":["int"],"align":["right"]},{"label":["exon_num"],"name":[12],"type":["int"],"align":["right"]}],"data":[{"1":"ENSGR0000228572.5","2":"LL0YNC03-29C1.1","3":"chrY","4":"253743","5":"255091","6":"+","7":"unprocessed_pseudogene","8":"KNOWN","9":"OTTHUMG00000046372.2","10":"1349","11":"259","12":"2"},{"1":"ENSGR0000182378.11","2":"PLCXD1","3":"chrY","4":"276322","5":"303356","6":"+","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000022693.4","10":"27035","11":"6191","12":"57"},{"1":"ENSGR0000178605.11","2":"GTPBP6","3":"chrY","4":"304529","5":"318819","6":"-","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000022694.3","10":"14291","11":"2964","12":"14"},{"1":"ENSGR0000226179.4","2":"LINC00685","3":"chrY","4":"320990","5":"321851","6":"+","7":"antisense","8":"KNOWN","9":"OTTHUMG00000021049.1","10":"862","11":"428","12":"2"},{"1":"ENSGR0000167393.15","2":"PPP2R3B","3":"chrY","4":"333963","5":"386955","6":"-","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021052.2","10":"52993","11":"9015","12":"56"},{"1":"ENSGR0000281849.1","2":"RP13-465B17.4","3":"chrY","4":"386980","5":"405579","6":"+","7":"antisense","8":"NOVEL","9":"OTTHUMG00000189992.1","10":"18600","11":"484","12":"2"},{"1":"ENSGR0000275287.3","2":"Metazoa_SRP","3":"chrY","4":"388100","5":"388389","6":"-","7":"misc_RNA","8":"NOVEL","9":"NA","10":"290","11":"290","12":"1"},{"1":"ENSGR0000280767.1","2":"RP13-465B17.5","3":"chrY","4":"419157","5":"421980","6":"+","7":"lincRNA","8":"NOVEL","9":"OTTHUMG00000189993.1","10":"2824","11":"515","12":"2"},{"1":"ENSGR0000234958.4","2":"FABP5P13","3":"chrY","4":"523775","5":"524102","6":"-","7":"processed_pseudogene","8":"KNOWN","9":"OTTHUMG00000021050.1","10":"328","11":"328","12":"1"},{"1":"ENSGR0000229232.4","2":"KRT18P53","3":"chrY","4":"545236","5":"545352","6":"-","7":"processed_pseudogene","8":"KNOWN","9":"OTTHUMG00000021051.1","10":"117","11":"117","12":"1"},{"1":"ENSGR0000185960.11","2":"SHOX","3":"chrY","4":"624344","5":"659411","6":"+","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021053.4","10":"35068","11":"4384","12":"22"},{"1":"ENSGR0000237531.4","2":"RP11-309M23.1","3":"chrY","4":"990221","5":"994365","6":"+","7":"lincRNA","8":"NOVEL","9":"OTTHUMG00000021054.1","10":"4145","11":"588","12":"2"},{"1":"ENSGR0000225661.5","2":"RPL14P5","3":"chrY","4":"1008503","5":"1010101","6":"-","7":"processed_pseudogene","8":"KNOWN","9":"OTTHUMG00000021055.1","10":"1599","11":"730","12":"3"},{"1":"ENSGR0000205755.9","2":"CRLF2","3":"chrY","4":"1187549","5":"1212750","6":"-","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000067432.2","10":"25202","11":"2010","12":"32"},{"1":"ENSGR0000198223.13","2":"CSF2RA","3":"chrY","4":"1268800","5":"1310381","6":"+","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000012533.6","10":"41582","11":"3830","12":"172"},{"1":"ENSGR0000264510.4","2":"BX649553.3","3":"chrY","4":"1291755","5":"1291828","6":"+","7":"miRNA","8":"NOVEL","9":"NA","10":"74","11":"74","12":"1"},{"1":"ENSGR0000264819.4","2":"BX649553.4","3":"chrY","4":"1292094","5":"1292167","6":"+","7":"miRNA","8":"NOVEL","9":"NA","10":"74","11":"74","12":"1"},{"1":"ENSGR0000263980.4","2":"BX649553.2","3":"chrY","4":"1293615","5":"1293689","6":"+","7":"miRNA","8":"NOVEL","9":"NA","10":"75","11":"75","12":"1"},{"1":"ENSGR0000265658.4","2":"MIR3690","3":"chrY","4":"1293918","5":"1293992","6":"+","7":"miRNA","8":"KNOWN","9":"NA","10":"75","11":"75","12":"1"},{"1":"ENSGR0000263835.4","2":"BX649553.1","3":"chrY","4":"1294132","5":"1294206","6":"+","7":"miRNA","8":"NOVEL","9":"NA","10":"75","11":"75","12":"1"},{"1":"ENSGR0000223274.4","2":"RNA5SP498","3":"chrY","4":"1300256","5":"1300375","6":"-","7":"rRNA","8":"KNOWN","9":"NA","10":"120","11":"120","12":"1"},{"1":"ENSGR0000185291.9","2":"IL3RA","3":"chrY","4":"1336616","5":"1382689","6":"+","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021059.3","10":"46074","11":"1710","12":"27"},{"1":"ENSGR0000169100.11","2":"SLC25A6","3":"chrY","4":"1386152","5":"1392724","6":"-","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021058.1","10":"6573","11":"2164","12":"12"},{"1":"ENSGR0000236871.5","2":"LINC00106","3":"chrY","4":"1396427","5":"1399402","6":"+","7":"lincRNA","8":"KNOWN","9":"OTTHUMG00000021061.3","10":"2976","11":"592","12":"5"},{"1":"ENSGR0000236017.6","2":"ASMTL-AS1","3":"chrY","4":"1401769","5":"1414028","6":"+","7":"antisense","8":"KNOWN","9":"OTTHUMG00000021056.3","10":"12260","11":"1335","12":"15"},{"1":"ENSGR0000169093.13","2":"ASMTL","3":"chrY","4":"1403139","5":"1453762","6":"-","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021057.1","10":"50624","11":"3506","12":"46"},{"1":"ENSGR0000182162.8","2":"P2RY8","3":"chrY","4":"1462572","5":"1537107","6":"-","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021060.1","10":"74536","11":"4459","12":"4"},{"1":"ENSGR0000197976.9","2":"AKAP17A","3":"chrY","4":"1591593","5":"1602514","6":"+","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021063.3","10":"10922","11":"4075","12":"15"},{"1":"ENSGR0000196433.10","2":"ASMT","3":"chrY","4":"1615001","5":"1643081","6":"+","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021065.2","10":"28081","11":"1846","12":"28"},{"1":"ENSGR0000223511.4","2":"RP13-297E16.4","3":"chrY","4":"1732584","5":"1755985","6":"+","7":"lincRNA","8":"NOVEL","9":"OTTHUMG00000021062.2","10":"23402","11":"747","12":"5"},{"1":"ENSGR0000234622.4","2":"RP13-297E16.5","3":"chrY","4":"1767347","5":"1768776","6":"+","7":"lincRNA","8":"NOVEL","9":"OTTHUMG00000021064.1","10":"1430","11":"548","12":"2"},{"1":"ENSGR0000169084.11","2":"DHRSX","3":"chrY","4":"2219516","5":"2502805","6":"-","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021068.3","10":"283290","11":"3620","12":"34"},{"1":"ENSGR0000223571.4","2":"DHRSX-IT1","3":"chrY","4":"2334295","5":"2336410","6":"-","7":"sense_intronic","8":"NOVEL","9":"OTTHUMG00000067406.1","10":"2116","11":"651","12":"2"},{"1":"ENSGR0000214717.8","2":"ZBED1","3":"chrY","4":"2486414","5":"2500967","6":"-","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021069.5","10":"14554","11":"4755","12":"10"},{"1":"ENSGR0000277120.3","2":"MIR6089","3":"chrY","4":"2609191","5":"2609254","6":"+","7":"miRNA","8":"KNOWN","9":"NA","10":"64","11":"64","12":"1"},{"1":"ENSGR0000223773.5","2":"CD99P1","3":"chrY","4":"2609348","5":"2657229","6":"+","7":"transcribed_unprocessed_pseudogene","8":"KNOWN","9":"OTTHUMG00000021071.4","10":"47882","11":"5921","12":"36"},{"1":"ENSGR0000230542.4","2":"LINC00102","3":"chrY","4":"2612988","5":"2615347","6":"-","7":"lincRNA","8":"KNOWN","9":"OTTHUMG00000021072.1","10":"2360","11":"1340","12":"2"},{"1":"ENSGR0000002586.16","2":"CD99","3":"chrY","4":"2691179","5":"2741309","6":"+","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000021073.6","10":"50131","11":"3284","12":"94"},{"1":"ENSGR0000168939.9","2":"SPRY3","3":"chrY","4":"56954332","5":"56968979","6":"+","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000022675.3","10":"14648","11":"9019","12":"2"},{"1":"ENSGR0000237801.4","2":"AMDP1","3":"chrY","4":"57015105","5":"57016096","6":"-","7":"processed_pseudogene","8":"KNOWN","9":"OTTHUMG00000022673.2","10":"992","11":"992","12":"1"},{"1":"ENSGR0000237040.4","2":"DPH3P2","3":"chrY","4":"57062156","5":"57062405","6":"+","7":"processed_pseudogene","8":"KNOWN","9":"OTTHUMG00000022680.1","10":"250","11":"250","12":"1"},{"1":"ENSGR0000124333.13","2":"VAMP7","3":"chrY","4":"57067813","5":"57130289","6":"+","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000022679.2","10":"62477","11":"2667","12":"44"},{"1":"ENSGR0000228410.4","2":"TCEB1P24","3":"chrY","4":"57165512","5":"57165845","6":"-","7":"processed_pseudogene","8":"KNOWN","9":"OTTHUMG00000040493.1","10":"334","11":"334","12":"1"},{"1":"ENSGR0000223484.5","2":"TRPC6P","3":"chrY","4":"57171890","5":"57172769","6":"-","7":"processed_pseudogene","8":"KNOWN","9":"OTTHUMG00000022681.1","10":"880","11":"880","12":"1"},{"1":"ENSGR0000124334.15","2":"IL9R","3":"chrY","4":"57184101","5":"57197337","6":"+","7":"protein_coding","8":"KNOWN","9":"OTTHUMG00000022720.1","10":"13237","11":"2504","12":"24"},{"1":"ENSGR0000270726.4","2":"AJ271736.10","3":"chrY","4":"57190738","5":"57208756","6":"+","7":"processed_transcript","8":"NOVEL","9":"OTTHUMG00000184987.2","10":"18019","11":"773","12":"4"},{"1":"ENSGR0000185203.10","2":"WASIR1","3":"chrY","4":"57201143","5":"57203357","6":"-","7":"antisense","8":"NOVEL","9":"OTTHUMG00000022676.3","10":"2215","11":"1054","12":"2"},{"1":"ENSGR0000182484.13","2":"WASH6P","3":"chrY","4":"57207346","5":"57212230","6":"+","7":"transcribed_unprocessed_pseudogene","8":"KNOWN","9":"OTTHUMG00000022677.4","10":"4885","11":"4618","12":"71"},{"1":"ENSGR0000276543.3","2":"AJ271736.1","3":"chrY","4":"57209151","5":"57209218","6":"+","7":"miRNA","8":"NOVEL","9":"NA","10":"68","11":"68","12":"1"},{"1":"ENSGR0000227159.6","2":"DDX11L16","3":"chrY","4":"57212184","5":"57214397","6":"-","7":"unprocessed_pseudogene","8":"KNOWN","9":"OTTHUMG00000022678.1","10":"2214","11":"1306","12":"5"}],"options":{"columns":{"min":{},"max":[10],"total":[12]},"rows":{"min":[10],"max":[10],"total":[50]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3IsIG1lc3NhZ2U9RkFMU0V9CmxpYnJhcnkoR2Vub21pY0ZlYXR1cmVzKQpsaWJyYXJ5KGVuc2VtYmxkYikKbGlicmFyeShoZXJlKQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgpgYGB7cn0KZHJfaGVyZSgpCmBgYAoKYGBge3J9CmVkYiA9IEVuc0RiKGhlcmUoJ3Vwc3RyZWFtX3NvdXJjZXMvRW5zRGIuSHNhcGllbnMudjEwMC5zcWxpdGUnKSkKCmdlbmNvZGVfdHhkYiA9IEdlbm9taWNGZWF0dXJlczo6bWFrZVR4RGJGcm9tR0ZGKAogICAgaGVyZSgndXBzdHJlYW1fc291cmNlcy9nZW5jb2RlLnYzNC5hbm5vdGF0aW9uLmd0Zi5neicpLAogICAgZm9ybWF0ID0gJ2d0ZicsCiAgICBkYXRhU291cmNlID0gJ0dFTkNPREUgdjM0JywKICAgIG9yZ2FuaXNtID0gJ0hvbW8gc2FwaWVucycKKQpgYGAKClJlY29uZmlndXJlIHRoZSBjaHJvbW9zb21lIG5hbWVzCmBgYHtyfQpzZXFsZXZlbHNTdHlsZShlZGIpID0gIlVDU0MiCgpjYW5vbmljYWxfY2hyb21zX29ubHlfZmlsdGVyID0gQW5ub3RhdGlvbkZpbHRlckxpc3QoCiAgICBTZXFOYW1lRmlsdGVyKHN0cl9jKCJjaHIiLCBjKDE6MjIsICJYIiwgIlkiLCAiTSIpKSksCiAgICBHZW5lSWRGaWx0ZXIoIkVOUyIsICJzdGFydHNXaXRoIikKKQpgYGAKCmBgYHtyfQplZGJfZ2VuZXMgPSBnZW5lcyhlZGIsIGZpbHRlciA9IGNhbm9uaWNhbF9jaHJvbXNfb25seV9maWx0ZXIpCmdlbmNvZGVfZ2VuZXMgPSBnZW5lcyhnZW5jb2RlX3R4ZGIpCmBgYAoKYGBge3J9Cm92ZXJsYXBfaWRzID0gZnVuY3Rpb24oeF9pZHMsIHlfaWRzKSB7CiAgICBsaXN0KAogICAgICAgIHNoYXJlZCA9IGludGVyc2VjdCh4X2lkcywgeV9pZHMpLAogICAgICAgIHVuaXF1ZV94ID0gc2V0ZGlmZih4X2lkcywgeV9pZHMpLAogICAgICAgIHVuaXF1ZV95ID0gc2V0ZGlmZih5X2lkcywgeF9pZHMpCiAgICApCn0KYGBgCgpgYGB7cn0KZ2VuZV9vdmVybGFwID0gb3ZlcmxhcF9pZHMoCiAgICBuYW1lcyhlZGJfZ2VuZXMpLCAKICAgIG5hbWVzKGdlbmNvZGVfZ2VuZXMpICU+JSBzdHJfcmVwbGFjZSgnXFwuXFxkKyQnLCAnJykKKQpnZW5lX292ZXJsYXAgJT4lIG1hcF9pbnQobGVuZ3RoKQpgYGAKCmBgYHtyfQpnZW5lX292ZXJsYXAkdW5pcXVlX3kKYGBgCgoKYGBge3J9CmVkYl90eHMgPSB0cmFuc2NyaXB0cyhlZGIsIGZpbHRlciA9IGNhbm9uaWNhbF9jaHJvbXNfb25seV9maWx0ZXIpCmdlbmNvZGVfdHhzID0gdHJhbnNjcmlwdHMoZ2VuY29kZV90eGRiKQpgYGAKCmBgYHtyfQp0eF9vdmVybGFwID0gb3ZlcmxhcF9pZHMoCiAgICBuYW1lcyhlZGJfdHhzKSwgCiAgICBnZW5jb2RlX3R4cyR0eF9uYW1lICU+JSBzdHJfcmVwbGFjZSgnXFwuXFxkKyQnLCAnJykKKSAKdHhfb3ZlcmxhcCAlPiUgbWFwX2ludChsZW5ndGgpCmBgYAoKYGBge3J9CmFsbChlbmRzV2l0aCh0eF9vdmVybGFwJHVuaXF1ZV95LCAnX1BBUl9ZJykpCmBgYAoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3IsIG1lc3NhZ2U9RkFMU0V9CmxpYnJhcnkoR2Vub21pY0ZlYXR1cmVzKQpsaWJyYXJ5KGVuc2VtYmxkYikKbGlicmFyeShoZXJlKQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgpHREMncyBHRU5DT0RFIHYyMiBtYXRjaGVzIEVuc2VtYmwgcmVsZWFzZSA3OS4KCmh0dHA6Ly9zMy5hbWF6b25hd3MuY29tL2Fubm90YXRpb25odWIvQUhFbnNEYnMvdjc5L0Vuc0RiLkhzYXBpZW5zLnY3OS5zcWxpdGUKYGBge3J9CmdkY19lZGIgPSBFbnNEYignfi9Cb3gvRGluZ19MYWIvUHJvamVjdHNfQ3VycmVudC9DUFRBQzMtR0JNL1Jlc291cmNlcy9Bbm5vdGF0aW9ucy9HREMvRW5zRGIuSHNhcGllbnMudjc5LkdFTkNPREUudjIyLnNxbGl0ZScpCgpnZGNfZ2VuZV9pbmZvID0gcmVhZF90c3YoJ34vRG93bmxvYWRzL2dlbmNvZGUuZ2VuZS5pbmZvLnYyMi50c3YnKQoKZ2VuY29kZV90eGRiID0gR2Vub21pY0ZlYXR1cmVzOjptYWtlVHhEYkZyb21HRkYoCiAgICAnfi9Eb3dubG9hZHMvZ2VuY29kZS52MjIuYW5ub3RhdGlvbi5ndGYuZ3onLAogICAgZm9ybWF0ID0gJ2d0ZicsCiAgICBkYXRhU291cmNlID0gJ0dFTkNPREUgdjIyJywKICAgIG9yZ2FuaXNtID0gJ0hvbW8gc2FwaWVucycKKQpgYGAKCkdldCBleHRyYSBhbm5vdGFpdG9uIG9uIHRoZSBnZW5lcwpgYGB7cn0KZ3RmX2dlbmUgPSBydHJhY2tsYXllcjo6aW1wb3J0KAogICAgJ34vRG93bmxvYWRzL2dlbmNvZGUudjIyLmFubm90YXRpb24uZ3RmLmd6JywgCiAgICBmb3JtYXQgPSAnR1RGJywKICAgIGZlYXR1cmUudHlwZSA9ICdnZW5lJwopIApgYGAKClJlY29uZmlndXJlIHRoZSBjaHJvbW9zb21lIG5hbWVzCmBgYHtyfQpzZXFsZXZlbHNTdHlsZShnZGNfZWRiKSA9ICJVQ1NDIgoKY2Fub25pY2FsX2Nocm9tc19vbmx5X2ZpbHRlciA9IEFubm90YXRpb25GaWx0ZXJMaXN0KAogICAgU2VxTmFtZUZpbHRlcihzdHJfYygiY2hyIiwgYygxOjIyLCAiWCIsICJZIiwgIk0iKSkpLAogICAgR2VuZUlkRmlsdGVyKCJFTlMiLCAic3RhcnRzV2l0aCIpCikKYGBgCgoKR0RDJ3MgZ2VuZSBpbmZvIGhhcwpgYGB7cn0KY29sbmFtZXMoZ2RjX2dlbmVfaW5mbykKYGBgCgpgYGB7cn0KaGVhZChnZGNfZ2VuZV9pbmZvKQpgYGAKCmBgYHtyfQplZGJfZ2VuZXMgPSBnZW5lcyhnZGNfZWRiLCBmaWx0ZXIgPSBjYW5vbmljYWxfY2hyb21zX29ubHlfZmlsdGVyKQpnZW5jb2RlX2dlbmVzID0gZ2VuZXMoZ2VuY29kZV90eGRiKSAlPiUgc29ydChpZ25vcmUuc3RyYW5kID0gVFJVRSkKYGBgCgpgYGB7cn0KbnVtX2V4b25zX3RibCA9IHRyYW5zY3JpcHRMZW5ndGhzKGdlbmNvZGVfdHhkYikgJT4lCiAgICBncm91cF9ieShnZW5lX2lkKSAlPiUKICAgIHN1bW1hcml6ZShleG9uX251bSA9IHN1bShuZXhvbikpICU+JQogICAgdW5ncm91cCgpCmBgYAoKYGBge3J9CmV4b25zX3Blcl9nZW5lID0gZXhvbnNCeShnZW5jb2RlX3R4ZGIsIGJ5ID0gJ2dlbmUnKQoKZXhvbl9sZW5ndGhfdGJsID0gZW5kb2FwcGx5KHdpZHRoKEdlbm9taWNSYW5nZXM6OnJlZHVjZShleG9uc19wZXJfZ2VuZSkpLCBzdW0pICU+JSAKICAgIHVubGlzdCgpICU+JQogICAgZW5mcmFtZShuYW1lID0gJ2dlbmVfaWQnLCB2YWx1ZSA9ICdleG9uX2xlbmd0aCcpCmBgYAoKYGBge3J9CmdlbmVfaW5mb190YmwgPSBndGZfZ2VuZSAlPiUgCiAgICBhcy5kYXRhLmZyYW1lKCkgJT4lIAogICAgYXNfdGliYmxlKCkgJT4lCiAgICBtdXRhdGUoZnVsbF9sZW5ndGggPSB3aWR0aChndGZfZ2VuZSkpICU+JQogICAgbGVmdF9qb2luKGV4b25fbGVuZ3RoX3RibCwgYnkgPSAnZ2VuZV9pZCcpICU+JQogICAgbGVmdF9qb2luKG51bV9leG9uc190YmwsIGJ5ID0gJ2dlbmVfaWQnKSAlPiUKICAgIHNlbGVjdChnZW5lX2lkLCBnZW5lX25hbWUsIHNlcW5hbWU9c2VxbmFtZXMsIHN0YXJ0LCBlbmQsIHN0cmFuZCwgZ2VuZV90eXBlLCBnZW5lX3N0YXR1cywgaGF2YW5hX2dlbmUsIGZ1bGxfbGVuZ3RoLCBleG9uX2xlbmd0aCwgZXhvbl9udW0pCmBgYAoKYGBge3J9CmFsbF9lcXVhbCgKICAgIGdlbmVfaW5mb190YmwsCiAgICBnZGNfZ2VuZV9pbmZvLAogICAgY29udmVydCA9IFRSVUUKKQpgYGAKCgpQQVIgZ2VuZXMKYGBge3J9CmdlbmVfaW5mb190YmwgJT4lCiAgICBmaWx0ZXIoc3RhcnRzV2l0aChnZW5lX2lkLCAnRU5TR1InKSkKYGBgCgo=</div>
 
 
 
@@ -1941,7 +1976,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("01_compare_EnsDb_GENCODE.Rmd");
+  window.initializeSourceEmbed("02_test_gene_info.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>

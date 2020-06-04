@@ -7,6 +7,21 @@ The pipeline aligns bulk RNA-seq reads and produces aligned BAMs, readcount, and
 
 
 
+## Output format
+Each sample gets its TSV in the exact same gene order. The output TSV file has the following columns:
+
+|   Column   |             Description              |
+| :--------- | :----------------------------------- |
+| gene_id    | Ensembl gene ID                      |
+| symbol     | Gene symbol (not unique)             |
+| read_count | stranded read count by featureCounts |
+| fpkm       | FPKM                                 |
+| fpkm_uq    | FPKM-UQ                              |
+
+Each batch of execution will produce a TSV `analysis_summary.dat` containing all output with the following columns:
+
+
+
 ## Processing description
 
 ### Alignment
@@ -35,15 +50,3 @@ conda create -n htan_bulk_rna python=3.8 \
 ```
 
 
-
-## Output format
-Each sample gets its TSV in the exact same gene order. The output TSV file has the following columns:
-
-|   Column   |             Description              |
-| :--------- | :----------------------------------- |
-| gene_id    | Ensembl gene ID                      |
-| read_count | stranded read count by featureCounts |
-| fpkm       | FPKM                                 |
-| fpkm_uq    | FPKM-UQ                              |
-
-Each batch of execution will produce a TSV `analysis_summary.dat` containing all output with the following columns:

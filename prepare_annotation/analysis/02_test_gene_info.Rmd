@@ -1,0 +1,102 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r, message=FALSE}
+library(GenomicFeatures)
+library(ensembldb)
+library(here)
+library(tidyverse)
+```
+
+GDC's GENCODE v22 matches Ensembl release 79.
+
+http://s3.amazonaws.com/annotationhub/AHEnsDbs/v79/EnsDb.Hsapiens.v79.sqlite
+```{r}
+gdc_edb = EnsDb('~/Box/Ding_Lab/Projects_Current/CPTAC3-GBM/Resources/Annotations/GDC/EnsDb.Hsapiens.v79.GENCODE.v22.sqlite')
+
+gdc_gene_info = read_tsv('~/Downloads/gencode.gene.info.v22.tsv')
+
+gencode_txdb = GenomicFeatures::makeTxDbFromGFF(
+    '~/Downloads/gencode.v22.annotation.gtf.gz',
+    format = 'gtf',
+    dataSource = 'GENCODE v22',
+    organism = 'Homo sapiens'
+)
+```
+
+Get extra annotaiton on the genes
+```{r}
+gtf_gene = rtracklayer::import(
+    '~/Downloads/gencode.v22.annotation.gtf.gz', 
+    format = 'GTF',
+    feature.type = 'gene'
+) 
+```
+
+Reconfigure the chromosome names
+```{r}
+seqlevelsStyle(gdc_edb) = "UCSC"
+
+canonical_chroms_only_filter = AnnotationFilterList(
+    SeqNameFilter(str_c("chr", c(1:22, "X", "Y", "M"))),
+    GeneIdFilter("ENS", "startsWith")
+)
+```
+
+
+GDC's gene info has
+```{r}
+colnames(gdc_gene_info)
+```
+
+```{r}
+head(gdc_gene_info)
+```
+
+```{r}
+edb_genes = genes(gdc_edb, filter = canonical_chroms_only_filter)
+gencode_genes = genes(gencode_txdb) %>% sort(ignore.strand = TRUE)
+```
+
+```{r}
+num_exons_tbl = transcriptLengths(gencode_txdb) %>%
+    group_by(gene_id) %>%
+    summarize(exon_num = sum(nexon)) %>%
+    ungroup()
+```
+
+```{r}
+exons_per_gene = exonsBy(gencode_txdb, by = 'gene')
+
+exon_length_tbl = endoapply(width(GenomicRanges::reduce(exons_per_gene)), sum) %>% 
+    unlist() %>%
+    enframe(name = 'gene_id', value = 'exon_length')
+```
+
+```{r}
+gene_info_tbl = gtf_gene %>% 
+    as.data.frame() %>% 
+    as_tibble() %>%
+    mutate(full_length = width(gtf_gene)) %>%
+    left_join(exon_length_tbl, by = 'gene_id') %>%
+    left_join(num_exons_tbl, by = 'gene_id') %>%
+    select(gene_id, gene_name, seqname=seqnames, start, end, strand, gene_type, gene_status, havana_gene, full_length, exon_length, exon_num)
+```
+
+```{r}
+all_equal(
+    gene_info_tbl,
+    gdc_gene_info,
+    convert = TRUE
+)
+```
+
+
+PAR genes
+```{r}
+gene_info_tbl %>%
+    filter(startsWith(gene_id, 'ENSGR'))
+```
+

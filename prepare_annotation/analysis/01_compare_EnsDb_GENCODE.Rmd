@@ -15,10 +15,10 @@ dr_here()
 ```
 
 ```{r}
-edb = EnsDb(here('prepare_annotation/upstream_sources/EnsDb.Hsapiens.v100.sqlite'))
+edb = EnsDb(here('upstream_sources/EnsDb.Hsapiens.v100.sqlite'))
 
 gencode_txdb = GenomicFeatures::makeTxDbFromGFF(
-    here('prepare_annotation/upstream_sources/gencode.v34.annotation.gtf.gz'),
+    here('upstream_sources/gencode.v34.annotation.gtf.gz'),
     format = 'gtf',
     dataSource = 'GENCODE v34',
     organism = 'Homo sapiens'
