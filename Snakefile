@@ -187,7 +187,12 @@ rule star_align_all_samples:
     """Align all RNA-seq samples."""
     input:
         all_sorted_bams=expand(rules.star_align.output.sorted_bam, sample=SAMPLES),
-        all_sorted_bam_bais=expand(rules.star_align.output.sorted_bam + '.bai', sample=SAMPLES)
+        all_sorted_bam_bais=expand(rules.star_align.output.sorted_bam + '.bai', sample=SAMPLES),
+        all_chimeric_sams=expand(rules.star_align.output.chimeric_sam, sample=SAMPLES),
+        all_chimeric_junctions=expand(rules.star_align.output.chimeric_junction, sample=SAMPLES),
+        all_quant_tx_bams=expand(rules.star_align.output.quant_tx_bam, sample=SAMPLES),
+        all_quant_gene_count_tabs=expand(rules.star_align.output.quant_gene_count_tab, sample=SAMPLES),
+        all_sj_count_tabs=expand(rules.star_align.output.sj_count_tab, sample=SAMPLES)
 
 
 rule featurecounts_unstranded_readcount:
@@ -246,24 +251,32 @@ rule all_fpkms:
 rule make_analysis_summary:
     """Generate the analysis summary table."""
     input: 
-        tsvs=rules.all_fpkms.input.fpkms,
-        genomic_bams=rules.star_align_all_samples.input.sorted_bam
+        rules.all_fpkms.input,
+        rules.star_align_all_samples.input
     output: analysis_summary='analysis_summary.dat'
     run:
         with open(output.analysis_summary, 'w') as f:
             writer = csv.writer(f, dialect='excel-tab', lineterminator='\n')
             # Write column header
-            cols = ['# case', 'disease',
-                    'data_path', 'file_format',
-                    'sample_id', 'sample_uuid']
+            cols = ['#specimen_id', 'patient_id',
+                    'result_type',
+                    'file_path', 'file_format',
+                    'cancer_type', 'sample_type', 'tissue']
             writer.writerow(cols)
 
             for sample, info in SAMPLE_INFO.items():
-                count_tsv_pth = Path(
-                    rules.generate_fpkm.output.fpkm.format(sample=sample)
-                ).resolve(strict=True)
-                writer.writerow([
-                    info.case, info.disease,
-                    str(count_tsv_pth), 'TSV',
-                    sample, info.uuid
-                ])
+                result_file_tpls = {
+                    ('fpkm_tsv', 'TSV'): rules.generate_fpkm.output.fpkm,
+                    ('genomic_bam', 'BAM'): rules.star_align.storted_bam,
+                    ('transcriptomic_bam', 'BAM'): rules.star_align.quant_tx_bam,
+                    ('chimeric_sam', 'SAM'): rules.star_align.chimeric_sam,
+                    ('splic_junction_tab', 'TSV'): rules.star_align.sj_count_tab,
+                )
+                for (result_type, file_format), file_path_format in result_file_tpls.items():
+                    abs_file_path = Path(file_path_format.format(sample=sample)).resolve(strict=TRUE)
+                    writer.writerow([
+                        sample, info.patient_id,
+                        result_type, 
+                        abs_file_path, file_format,
+                        info.cancer_type, info.sample_type, info.tissue
+                    ])
