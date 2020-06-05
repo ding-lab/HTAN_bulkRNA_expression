@@ -125,7 +125,7 @@ rule star_align:
     threads: 16
     resources:
         io_heavy=1,
-        mem_mb=lambda wildcards, attempt: 32000 + 16000 * (attempt - 1)
+        mem_mb=lambda wildcards, attempt: 40000 + 16000 * (attempt - 1)
     shell:
         "STAR "
         "--readFilesIn {params.input_str} "
