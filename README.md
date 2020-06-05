@@ -36,8 +36,23 @@ conda create -n htan_bulk_rna python=3.8 \
     subread=2.0.1
 ```
 
+
 ### Create a new batch
 Copy `example_batch/` to the desired location to store the output. Modify the `snakemake_config.json` to ensure all file paths exist.
+
+```
+# Create the result summary of the alignment outputs and readcount TSVs
+snakemake --configfile=snakemake_config.json -s ../pipeline_workflow/Snakefile \
+    --cores 54 -p \
+    --resouces io_heavy=4 -- \
+    make_analysis_summary
+
+# Only the alignment
+snakemake ... star_align_all_samples
+
+# All readcount and FPKMs
+snakemake ... all_fpkms
+```
 
 
 ## Processing description

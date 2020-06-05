@@ -129,17 +129,28 @@ rule star_align:
     shell:
         "STAR "
         "--readFilesIn {params.input_str} "
+        # Most parameters follow GDC
         "--alignIntronMax 1000000 "
         "--alignIntronMin 20 "
         "--alignMatesGapMax 1000000 "
         "--alignSJDBoverhangMin 1 "
         "--alignSJoverhangMin 8 "
         "--alignSoftClipAtReferenceEnds Yes "
-        "--chimJunctionOverhangMin 15 "
+
+        # Follow arriba's recommendation regarding chimera parameters
+        # Ref: https://arriba.readthedocs.io/en/latest/workflow/
+        "--chimJunctionOverhangMin 10 "
         "--chimMainSegmentMultNmax 1 "
         "--chimOutType Junctions SeparateSAMold WithinBAM SoftClip "
         "--chimOutJunctionFormat 1 "
-        "--chimSegmentMin 15 "
+        "--chimSegmentMin 10 "
+        "--chimScoreMin 1" 
+        "--chimScoreDropMax 30 "
+        "--chimScoreJunctionNonGTAG 0 "
+        "--chimScoreSeparation 1 "
+        "--alignSJstitchMismatchNmax 5 -1 5 5 "
+        "--chimSegmentReadGapMax 3 "
+    
         "--genomeDir {params.star_ix} "
         "--genomeLoad NoSharedMemory "
         "--limitBAMsortRAM 0 "
@@ -223,17 +234,20 @@ rule generate_fpkm:
 
 
 rule all_featurecounts_stranded_readcount:
-    input:
-        counts=expand(rules.compress_featurecounts.output[0], sample=SAMPLES)
+    """featureCounts of all samples."""
+    input: counts=expand(rules.compress_featurecounts.output[0], sample=SAMPLES)
 
 
 rule all_fpkms:
+    """FPKM TSVs of all samples."""
     input: fpkms=expand(rules.generate_fpkm.output.fpkm, sample=SAMPLES)
 
 
 rule make_analysis_summary:
     """Generate the analysis summary table."""
-    input: rules.all_fpkms.input.fpkms
+    input: 
+        tsvs=rules.all_fpkms.input.fpkms,
+        genomic_bams=rules.star_align_all_samples.input.sorted_bam
     output: analysis_summary='analysis_summary.dat'
     run:
         with open(output.analysis_summary, 'w') as f:
