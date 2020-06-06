@@ -144,13 +144,13 @@ rule star_align:
         "--chimOutType Junctions SeparateSAMold WithinBAM SoftClip "
         "--chimOutJunctionFormat 1 "
         "--chimSegmentMin 10 "
-        "--chimScoreMin 1" 
+        "--chimScoreMin 1"
         "--chimScoreDropMax 30 "
         "--chimScoreJunctionNonGTAG 0 "
         "--chimScoreSeparation 1 "
         "--alignSJstitchMismatchNmax 5 -1 5 5 "
         "--chimSegmentReadGapMax 3 "
-    
+
         "--genomeDir {params.star_ix} "
         "--genomeLoad NoSharedMemory "
         "--limitBAMsortRAM 0 "
@@ -250,11 +250,18 @@ rule all_fpkms:
 
 rule make_analysis_summary:
     """Generate the analysis summary table."""
-    input: 
+    input:
         rules.all_fpkms.input,
         rules.star_align_all_samples.input
     output: analysis_summary='analysis_summary.dat'
     run:
+        result_file_tpls = {
+            ('fpkm_tsv', 'TSV'): rules.generate_fpkm.output.fpkm,
+            ('genomic_bam', 'BAM'): rules.star_align.output.sorted_bam,
+            ('transcriptomic_bam', 'BAM'): rules.star_align.output.quant_tx_bam,
+            ('chimeric_sam', 'SAM'): rules.star_align.output.chimeric_sam,
+            ('splic_junction_tab', 'TSV'): rules.star_align.output.sj_count_tab,
+        }
         with open(output.analysis_summary, 'w') as f:
             writer = csv.writer(f, dialect='excel-tab', lineterminator='\n')
             # Write column header
@@ -265,18 +272,11 @@ rule make_analysis_summary:
             writer.writerow(cols)
 
             for sample, info in SAMPLE_INFO.items():
-                result_file_tpls = {
-                    ('fpkm_tsv', 'TSV'): rules.generate_fpkm.output.fpkm,
-                    ('genomic_bam', 'BAM'): rules.star_align.storted_bam,
-                    ('transcriptomic_bam', 'BAM'): rules.star_align.quant_tx_bam,
-                    ('chimeric_sam', 'SAM'): rules.star_align.chimeric_sam,
-                    ('splic_junction_tab', 'TSV'): rules.star_align.sj_count_tab,
-                )
                 for (result_type, file_format), file_path_format in result_file_tpls.items():
-                    abs_file_path = Path(file_path_format.format(sample=sample)).resolve(strict=TRUE)
+                    abs_file_path = Path(file_path_format.format(sample=sample)).resolve(strict=True)
                     writer.writerow([
                         sample, info.patient_id,
-                        result_type, 
+                        result_type,
                         abs_file_path, file_format,
                         info.cancer_type, info.sample_type, info.tissue
                     ])
