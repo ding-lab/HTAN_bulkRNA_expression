@@ -4,7 +4,7 @@ The pipeline aligns bulk RNA-seq reads and produces aligned BAMs, readcount, and
 
 
 ## Release
-- v1.0: Initial release
+- v1.0: Initial release (git commit `4351a90f284e5a4a7902135ab698fe0a8ac356ac`)
 
 
 ## Output
