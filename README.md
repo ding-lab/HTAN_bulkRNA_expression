@@ -4,14 +4,22 @@ The pipeline aligns bulk RNA-seq reads and produces aligned BAMs, readcount, and
 
 
 ## Release
-
+- v1.0: Initial release
 
 
 ## Output
 Each batch of execution will produce a TSV `analysis_summary.dat` containing all results.
 
+Possible result types are:
+- genomic_bam
+- transcriptomic_bam
+- chimeric_sam
+- fpkm_tsv
+- splic_junction_tab
+
+
 ### Gene expression table (read count, FPKM, and FPKM-UQ)
-Each sample gets its TSV in the exact same gene order. The output TSV file has the following columns:
+Each sample gets its `fpkm_tsv` TSV in the exact same gene order. The output TSV file has the following columns:
 
 |   Column   |         Description         |
 | :--------- | :-------------------------- |
@@ -47,7 +55,7 @@ conda create -n htan_bulk_rna python=3.8 \
 # Create the result summary of the alignment outputs and readcount TSVs
 snakemake --configfile=snakemake_config.json -s ../pipeline_workflow/Snakefile \
     --cores 54 -p \
-    --resouces io_heavy=4 -- \
+    --resouces io_heavy=5 -- \
     make_analysis_summary
 
 # Only the alignment
