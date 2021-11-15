@@ -1,0 +1,163 @@
+---
+title: "R Notebook"
+output: 
+    html_document: 
+        df_print: paged
+---
+
+```{r, message=FALSE}
+library(RSQLite)
+library(rtracklayer)
+library(GenomicFeatures)
+library(ensembldb)
+library(here)
+library(tidyverse)
+```
+
+```{r}
+edb = EnsDb(here('upstream_sources/EnsDb.Hsapiens.v102.sqlite'))
+
+gencode_txdb = makeTxDbFromGFF(
+    here('upstream_sources/gencode.v36.annotation.gtf.gz'),
+    format = 'gtf',
+    dataSource = 'GENCODE v36',
+    organism = 'Homo sapiens'
+)
+```
+
+Get extra annotaiton on the genes
+```{r}
+gtf_gene = rtracklayer::import(
+    here('upstream_sources/gencode.v36.annotation.gtf.gz'), 
+    format = 'GTF',
+    feature.type = 'gene'
+)
+```
+
+```{r}
+mcols(gtf_gene) %>% head()
+```
+
+```{r}
+table(gtf_gene$tag)
+```
+
+
+Reconfigure the chromosome names
+```{r}
+seqlevelsStyle(edb) = "UCSC"
+
+canonical_chroms_only_filter = AnnotationFilterList(
+    SeqNameFilter(str_c("chr", c(1:22, "X", "Y", "M"))),
+    GeneIdFilter("ENS", "startsWith")
+)
+```
+
+
+## Create gene info from the GENCODE GTF
+Count the total number of exons of all the transcripts of each gene.
+```{r}
+num_exons_tbl = transcriptLengths(gencode_txdb) %>%
+    group_by(gene_id) %>%
+    summarize(exon_num = sum(nexon)) %>%
+    ungroup()
+```
+
+Count the merged total length of all exons of each gene.
+```{r}
+exons_per_gene = exonsBy(gencode_txdb, by = 'gene')
+
+exon_length_tbl = endoapply(width(GenomicRanges::reduce(exons_per_gene)), sum) %>% 
+    unlist() %>%
+    enframe(name = 'gene_id', value = 'exon_length')
+```
+
+```{r}
+gene_info_tbl = gtf_gene %>% 
+    as.data.frame() %>% 
+    as_tibble() %>%
+    mutate(full_length = width(gtf_gene)) %>%
+    left_join(exon_length_tbl, by = 'gene_id') %>%
+    left_join(num_exons_tbl, by = 'gene_id') %>%
+    select(gene_id, gene_name, 
+           seqname=seqnames, start, end, strand, 
+           gene_type, hgnc_id, havana_gene,
+           gencode_tag=tag,
+           full_length, exon_length, exon_num)
+```
+
+```{r}
+gene_info_tbl %>% head()
+```
+
+```{r}
+gene_info_tbl %>% 
+    write_tsv(here('final_outputs/gencode.gene.info.v36.tsv.gz'))
+```
+
+
+
+## Compare the results with Ensembl database
+```{r}
+edb_genes = genes(edb, filter = canonical_chroms_only_filter)
+```
+
+```{r}
+edb_num_exons_tbl = transcriptLengths(edb, filter = canonical_chroms_only_filter) %>%
+    group_by(gene_id) %>%
+    summarize(exon_num = sum(nexon)) %>%
+    ungroup()
+```
+
+```{r}
+edb_exon_length_tbl = GenomicRanges::reduce(exonsBy(edb, by = 'gene', filter = canonical_chroms_only_filter)) %>%
+    width() %>%
+    endoapply(sum) %>% 
+    unlist() %>%
+    enframe(name = 'gene_id', value = 'exon_length')
+```
+
+```{r}
+edb_gene_info = edb_genes %>% 
+    as_tibble() %>%
+    extract(description, "hgnc_id", "Acc:(HGNC:\\d+)") %>%
+    left_join(edb_num_exons_tbl, by = 'gene_id') %>%
+    left_join(edb_exon_length_tbl, by = 'gene_id') %>%
+    select(
+        gene_id = gene_id_version,
+        gene_name = symbol,
+        seqname=seqnames, start, end, strand,
+        gene_type = gene_biotype, hgnc_id,
+        full_length = width
+    )
+```
+
+```{r}
+all_equal(
+    gene_info_tbl %>% 
+        filter(is.na(gencode_tag) | gencode_tag != 'PAR') %>% 
+        select(colnames(edb_gene_info)),
+    edb_gene_info,
+    convert = TRUE
+)
+```
+
+
+A different way to get num_exon from EnsDb using SQL query
+```
+edb_num_exons_sql_tbl = RSQLite::dbGetQuery(
+    dbconn(edb),
+    "
+    with tx_exon AS (
+        select tx_id, count(*) as num_exon_per_tx
+        from tx2exon 
+        group by tx_id
+    )
+    select gene_id_version, sum(num_exon_per_tx) as num_exon
+    from gene
+    left join tx on gene.gene_id = tx.gene_id
+    left join tx_exon on tx.tx_id = tx_exon.tx_id
+    group by gene_id_version
+    "
+) %>% as_tibble()
+```

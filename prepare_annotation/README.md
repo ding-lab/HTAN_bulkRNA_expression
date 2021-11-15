@@ -10,6 +10,12 @@ The workflow to create a Ensembl v100 (GENCODE v34) annotation compatible with G
     curl -L -o upstream_sources/EnsDb.Hsapiens.v100.sqlite \
         http://s3.amazonaws.com/annotationhub/AHEnsDbs/v100/EnsDb.Hsapiens.v100.sqlite
 
+    # gencode v36 and ensembl release 102
+    curl -L -o upstream_sources/gencode.v36.annotation.gtf.gz \
+        https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz
+    curl -L -o upstream_sources/EnsDb.Hsapiens.v102.sqlite \
+        http://s3.amazonaws.com/annotationhub/AHEnsDbs/v102/EnsDb.Hsapiens.v102.sqlite
+
 
 ### Run R notebooks
 Run `analysis/03_make_gene_info.Rmd` to generate the gene info table.
