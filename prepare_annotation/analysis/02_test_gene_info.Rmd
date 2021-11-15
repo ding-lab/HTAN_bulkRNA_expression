@@ -1,6 +1,8 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output: 
+    html_document: 
+        df_print: paged
 ---
 
 ```{r, message=FALSE}
@@ -16,10 +18,10 @@ http://s3.amazonaws.com/annotationhub/AHEnsDbs/v79/EnsDb.Hsapiens.v79.sqlite
 ```{r}
 gdc_edb = EnsDb('~/Box/Ding_Lab/Projects_Current/CPTAC3-GBM/Resources/Annotations/GDC/EnsDb.Hsapiens.v79.GENCODE.v22.sqlite')
 
-gdc_gene_info = read_tsv('~/Downloads/gencode.gene.info.v22.tsv')
+gdc_gene_info = read_tsv('~/Box/Ding_Lab/Projects_Current/CPTAC3-GBM/Resources/Annotations/GDC/gencode.gene.info.v22.tsv')
 
 gencode_txdb = GenomicFeatures::makeTxDbFromGFF(
-    '~/Downloads/gencode.v22.annotation.gtf.gz',
+    '~/Box/Ding_Lab/Projects_Current/CPTAC3-GBM/Resources/Annotations/GDC/gencode.v22.annotation.gtf.gz',
     format = 'gtf',
     dataSource = 'GENCODE v22',
     organism = 'Homo sapiens'
@@ -29,7 +31,7 @@ gencode_txdb = GenomicFeatures::makeTxDbFromGFF(
 Get extra annotaiton on the genes
 ```{r}
 gtf_gene = rtracklayer::import(
-    '~/Downloads/gencode.v22.annotation.gtf.gz', 
+    '~/Box/Ding_Lab/Projects_Current/CPTAC3-GBM/Resources/Annotations/GDC/gencode.v22.annotation.gtf.gz',
     format = 'GTF',
     feature.type = 'gene'
 ) 

@@ -1,6 +1,8 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output: 
+    html_document: 
+        df_print: paged
 ---
 
 ```{r, message=FALSE}
@@ -59,7 +61,12 @@ gene_overlap %>% map_int(length)
 ```
 
 ```{r}
-gene_overlap$unique_y
+gene_overlap$unique_y %>% head()
+```
+
+
+```{r}
+all(endsWith(gene_overlap$unique_y, '_PAR_Y'))
 ```
 
 
